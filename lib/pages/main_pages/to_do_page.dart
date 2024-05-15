@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/group_page.dart';
-import 'package:shopsquad/pages/main_pages/list_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
+import 'package:shopsquad/widgets/to_do.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_button.dart';
@@ -9,14 +9,14 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 
 enum MainPagesSlides { list, group, profile }
 
-class MainPages extends StatefulWidget {
-  const MainPages({super.key});
+class ToDoPage extends StatefulWidget {
+  const ToDoPage({super.key});
 
   @override
-  State<MainPages> createState() => _MainPagesState();
+  State<ToDoPage> createState() => _ToDoPageState();
 }
 
-class _MainPagesState extends State<MainPages> {
+class _ToDoPageState extends State<ToDoPage> {
   final PageController _controller = PageController();
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
@@ -35,7 +35,7 @@ class _MainPagesState extends State<MainPages> {
       case MainPagesSlides.group:
         return const GroupPage();
       case MainPagesSlides.list:
-        return const ListPage();
+        return const ToDo();
       case MainPagesSlides.profile:
         return const ProfilePage();
     }
