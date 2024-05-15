@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 
 class MyButton extends StatelessWidget {
   const MyButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
     required this.backgroundColor,
     required this.onPressed,
     this.icon,
-  }) : super(key: key);
+  });
 
   final String text;
   final Color color;

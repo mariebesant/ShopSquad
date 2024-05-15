@@ -18,9 +18,6 @@ class TogglePayment extends StatefulWidget {
 }
 
 class _TogglePaymentState extends State<TogglePayment> {
-  final List<bool> _toggleButtonsSelection = PaymentMethod.values
-      .map((PaymentMethod e) => e == PaymentMethod.cash)
-      .toList();
   Set<PaymentMethod> _segmentedButtonSelection = <PaymentMethod>{
     PaymentMethod.cash
   };

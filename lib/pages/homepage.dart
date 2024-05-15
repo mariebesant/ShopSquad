@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/addGroup.dart';
-import 'package:shopsquad/pages/joinGroup.dart';
-import 'package:shopsquad/pages/login.dart';
-import 'package:shopsquad/pages/signIn.dart';
+import 'package:shopsquad/pages/add_group.dart';
+import 'package:shopsquad/pages/join_group.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_button.dart';

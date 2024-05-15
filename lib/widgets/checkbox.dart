@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 
 class CheckboxExample extends StatefulWidget {
-  const CheckboxExample({Key? key}) : super(key: key);
+  const CheckboxExample({super.key});
 
 
   @override
@@ -15,7 +15,7 @@ class _CheckboxExampleState extends State<CheckboxExample> {
   @override
   Widget build(BuildContext context) {
     return Checkbox( 
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
       checkColor: AppColors.success, 
       fillColor: MaterialStateProperty.resolveWith<Color?>(
         (Set<MaterialState> states) {

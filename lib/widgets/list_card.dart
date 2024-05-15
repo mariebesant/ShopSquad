@@ -29,7 +29,7 @@ class ListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: ListTile(
-          leading: CheckboxExample(),
+          leading: const CheckboxExample(),
           title: Text(title,
               style: TextStyle(
                   color: isSortByPerson ? AppColors.green : AppColors.white)),

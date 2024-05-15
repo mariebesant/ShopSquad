@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/group_page.dart';
 import 'package:shopsquad/pages/main_pages/list_page.dart';
@@ -12,6 +10,8 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 enum MainPagesSlides { list, group, profile }
 
 class MainPages extends StatefulWidget {
+  const MainPages({super.key});
+
   @override
   State<MainPages> createState() => _MainPagesState();
 }
@@ -33,11 +33,11 @@ class _MainPagesState extends State<MainPages> {
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
-        return GroupPage();
+        return const GroupPage();
       case MainPagesSlides.list:
         return const ListPage();
       case MainPagesSlides.profile:
-        return ProfilePage();
+        return const ProfilePage();
     }
   }
 

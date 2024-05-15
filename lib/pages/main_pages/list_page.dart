@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/widgets/list_card.dart';
 
 class ListPage extends StatefulWidget {

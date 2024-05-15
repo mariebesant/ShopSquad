@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/homepage.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
-import 'package:shopsquad/widgets/togglePayment.dart';
+import 'package:shopsquad/pages/main_pages/list_page.dart';
 
-class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+class JoinGroup extends StatelessWidget {
+  const JoinGroup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +14,13 @@ class SignIn extends StatelessWidget {
         backgroundColor: AppColors.background,
         actions: [
           TextButton(
-            onPressed: ()  => Navigator.of(context).push(
-                  MaterialPageRoute<dynamic>(
-                    builder: (context) => const Homepage(),
-                  ),
-                ),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<dynamic>(
+                builder: (context) => const ListPage(),
+              ),
+            ),
             child: Text(
-              'Fertig',
+              'Beitreten',
               style: TextStyle(color: AppColors.white, fontSize: AppSizes.s1),
             ),
           ),
@@ -37,9 +36,10 @@ class SignIn extends StatelessWidget {
               SizedBox(
                 height: AppSizes.s5,
               ),
-              MyTextField(text: 'Benutzername', isPassword: false,),
-              MyTextField(text: 'Passwort', isPassword: true,),
-              TogglePayment(),
+              MyTextField(
+                text: 'Gib einen Code ein',
+                isPassword: false,
+              ),
             ],
           ),
         ),

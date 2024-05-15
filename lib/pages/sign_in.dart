@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/main_pages.dart';
-import 'package:shopsquad/pages/main_pages/list_page.dart';
+import 'package:shopsquad/pages/homepage.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
+import 'package:shopsquad/widgets/toggle_payment.dart';
 
-class AddGroup extends StatelessWidget {
-  const AddGroup({super.key});
+class SignIn extends StatelessWidget {
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,13 @@ class AddGroup extends StatelessWidget {
         backgroundColor: AppColors.background,
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<dynamic>(
-                builder: (context) => MainPages(),
-              ),
-            ),
+            onPressed: ()  => Navigator.of(context).push(
+                  MaterialPageRoute<dynamic>(
+                    builder: (context) => const Homepage(),
+                  ),
+                ),
             child: Text(
-              'Erstellen',
+              'Fertig',
               style: TextStyle(color: AppColors.white, fontSize: AppSizes.s1),
             ),
           ),
@@ -37,10 +37,9 @@ class AddGroup extends StatelessWidget {
               SizedBox(
                 height: AppSizes.s5,
               ),
-              MyTextField(
-                text: 'Gruppenname',
-                isPassword: false,
-              ),
+              MyTextField(text: 'Benutzername', isPassword: false,),
+              MyTextField(text: 'Passwort', isPassword: true,),
+              TogglePayment(),
             ],
           ),
         ),

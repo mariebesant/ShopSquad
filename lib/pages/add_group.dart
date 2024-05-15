@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
-import 'package:shopsquad/pages/main_pages/list_page.dart';
 
-class JoinGroup extends StatelessWidget {
-  const JoinGroup({super.key});
+class AddGroup extends StatelessWidget {
+  const AddGroup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,11 @@ class JoinGroup extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<dynamic>(
-                builder: (context) => ListPage(),
+                builder: (context) => const MainPages(),
               ),
             ),
             child: Text(
-              'Beitreten',
+              'Erstellen',
               style: TextStyle(color: AppColors.white, fontSize: AppSizes.s1),
             ),
           ),
@@ -37,7 +37,7 @@ class JoinGroup extends StatelessWidget {
                 height: AppSizes.s5,
               ),
               MyTextField(
-                text: 'Gib einen Code ein',
+                text: 'Gruppenname',
                 isPassword: false,
               ),
             ],

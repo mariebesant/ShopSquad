@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/login.dart';
-import 'package:shopsquad/pages/signIn.dart';
+import 'package:shopsquad/pages/sign_in.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_button.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key});
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
