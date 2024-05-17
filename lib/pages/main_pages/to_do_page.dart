@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/group_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
+import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/widgets/to_do.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -62,6 +63,10 @@ class _ToDoPageState extends State<ToDoPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+          child: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
+        ),
           Expanded(
             child: PageView.builder(
               onPageChanged: (index) {

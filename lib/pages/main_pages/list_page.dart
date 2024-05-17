@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/list_card.dart';
+import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
 class ListPage extends StatefulWidget {
@@ -12,8 +14,7 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   List<Map<String, dynamic>> listCardInfo = [
     {
-      'subtitle':
-          'Indicator',
+      'subtitle': 'Indicator',
       'title': 'Monday',
     },
     {
@@ -25,13 +26,19 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: listCardInfo.map((info) {
-        return ListCard(
-          subtitle: info['subtitle'],
-          title: info['title'],
-        );
-      }).toList(),
+    return Column(
+      children: [
+        Expanded(
+          child: ListView(
+            children: listCardInfo.map((info) {
+              return ListCard(
+                subtitle: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
+                title: info['title'],
+              );
+            }).toList(),
+          ),
+        ),
+      ],
     );
   }
 }
