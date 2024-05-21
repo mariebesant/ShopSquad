@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/main_pages/to_do_page.dart';
-
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
@@ -10,10 +8,14 @@ class ListCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
+    required this.backgroundColor,
+    this.onTap,
   });
 
   final String title;
   final MyProgressIndicator subtitle;
+  final Color backgroundColor;
+  final VoidCallback? onTap; // onTap Callback hinzugefügt
 
   static const IconData moneyIcon =
       IconData(0xf1dd, fontFamily: 'MaterialIcons');
@@ -25,19 +27,11 @@ class ListCard extends StatelessWidget {
         vertical: AppSizes.s0_5,
         horizontal: AppSizes.s1,
       ),
-      child: InkWell(
-        // Wrap Container with InkWell to make it clickable
-        onTap: () {
-          Navigator.of(context).push(
-            // Navigate to ListPage
-            MaterialPageRoute(
-              builder: (context) => const ToDoPage(),
-            ),
-          );
-        },
+      child: GestureDetector(
+        onTap: onTap, // onTap Funktion hier genutzt
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.accentGray,
+            color: backgroundColor,
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: ListTile(

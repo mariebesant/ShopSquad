@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shopsquad/pages/main_pages/to_do_page.dart';
+import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/widgets/list_card.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 
@@ -31,6 +33,14 @@ class _ListPageState extends State<ListPage> {
               return ListCard(
                 subtitle: const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
                 title: info['title'],
+                backgroundColor: AppColors.accentGray,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ToDoPage(),
+                    ),
+                  );
+                }, // onTap Funktion hier definiert
               );
             }).toList(),
           ),

@@ -49,14 +49,17 @@ class _MainPagesState extends State<MainPages> {
     });
   }
 
-  void addGrocery() {
-  }
+  void addGrocery() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        title: Text(
+          'Hallo',
+          style: TextStyle(color: AppColors.white),
+        ),
       ),
       backgroundColor: AppColors.background,
       body: Column(
@@ -85,26 +88,30 @@ class _MainPagesState extends State<MainPages> {
                 SizedBox(
                   width: AppSizes.s10,
                   height: AppSizes.s3,
-                  child: currentIndex == 0 ? MyButton(
-                    text: 'EINKAUFEN',
-                    color: AppColors.green,
-                    backgroundColor: Colors.transparent,
-                    onPressed: addGrocery,
-                  ): null,
+                  child: currentIndex == 0
+                      ? MyButton(
+                          text: 'EINKAUFEN',
+                          color: AppColors.green,
+                          backgroundColor: Colors.transparent,
+                          onPressed: addGrocery,
+                        )
+                      : null,
                 ),
                 SizedBox(
                   width: AppSizes.s10,
                   height: AppSizes.s3,
-                  child: MyButton(
-                    text: 'HINZUFÜGEN',
-                    color: AppColors.green,
-                    backgroundColor: AppColors.accentGray,
-                    onPressed: addGrocery,
-                    icon: Icon(
-                      add,
-                      color: AppColors.green,
-                    ),
-                  ),
+                  child: currentIndex != 2
+                      ? MyButton(
+                          text: 'HINZUFÜGEN',
+                          color: AppColors.green,
+                          backgroundColor: AppColors.accentGray,
+                          onPressed: addGrocery,
+                          icon: Icon(
+                            add,
+                            color: AppColors.green,
+                          ),
+                        )
+                      : null,
                 ),
               ],
             ),
