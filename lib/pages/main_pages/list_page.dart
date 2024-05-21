@@ -12,6 +12,9 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  static const IconData moneyIcon =
+      IconData(0xf1dd, fontFamily: 'MaterialIcons');
+
   List<Map<String, dynamic>> listCardInfo = [
     {
       'subtitle': 'Indicator',
@@ -33,6 +36,7 @@ class _ListPageState extends State<ListPage> {
               return ListCard(
                 subtitle: const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
                 title: info['title'],
+                trailing: Icon(moneyIcon, color: AppColors.white,),
                 backgroundColor: AppColors.accentGray,
                 onTap: () {
                   Navigator.of(context).push(

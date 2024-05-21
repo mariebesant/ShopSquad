@@ -21,6 +21,7 @@ class _MainPagesState extends State<MainPages> {
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
   bool isSelected = false;
+  String title = 'Deine Listen';
 
   static const IconData profileIcon =
       IconData(0xee35, fontFamily: 'MaterialIcons');
@@ -33,11 +34,14 @@ class _MainPagesState extends State<MainPages> {
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
+        title = 'Deine Gruppen';
         return const GroupPage();
       case MainPagesSlides.list:
+        title = 'Deine Listen';
         return const ListPage();
       case MainPagesSlides.profile:
-        return const ProfilePage();
+        title = 'Dein Profil';
+        return ProfilePage();
     }
   }
 
@@ -57,7 +61,7 @@ class _MainPagesState extends State<MainPages> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         title: Text(
-          'Hallo',
+          title,
           style: TextStyle(color: AppColors.white),
         ),
       ),

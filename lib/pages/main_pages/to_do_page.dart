@@ -38,7 +38,7 @@ class _ToDoPageState extends State<ToDoPage> {
       case MainPagesSlides.list:
         return const ToDo();
       case MainPagesSlides.profile:
-        return const ProfilePage();
+        return ProfilePage();
     }
   }
 
@@ -50,22 +50,26 @@ class _ToDoPageState extends State<ToDoPage> {
     });
   }
 
-  void addGrocery() {
-  }
+  void addGrocery() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
+        title: Text(
+          'Gruppenname',
+          style: TextStyle(color: AppColors.white),
+        ),
       ),
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
-          child: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
-        ),
+          const Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+            child: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
+          ),
           Expanded(
             child: PageView.builder(
               onPageChanged: (index) {

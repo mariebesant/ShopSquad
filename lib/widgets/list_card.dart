@@ -9,16 +9,15 @@ class ListCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.backgroundColor,
+    required this.trailing,
     this.onTap,
   });
 
   final String title;
-  final MyProgressIndicator subtitle;
+  final Widget subtitle;
   final Color backgroundColor;
+  final Widget trailing;
   final VoidCallback? onTap; // onTap Callback hinzugefügt
-
-  static const IconData moneyIcon =
-      IconData(0xf1dd, fontFamily: 'MaterialIcons');
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class ListCard extends StatelessWidget {
               style: TextStyle(color: AppColors.white),
             ),
             subtitle: subtitle,
-            trailing: Icon(moneyIcon, color: AppColors.white),
+            trailing: trailing,
           ),
         ),
       ),
