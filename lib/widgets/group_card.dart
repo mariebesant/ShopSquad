@@ -23,7 +23,7 @@ class GroupCard extends StatelessWidget {
           Navigator.of(context).push(
             // Navigate to ListPage
             MaterialPageRoute(
-              builder: (context) => ToDoPage(),
+              builder: (context) => const ToDoPage(),
             ),
           );
         },

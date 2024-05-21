@@ -51,7 +51,6 @@ class _ToDoPageState extends State<ToDoPage> {
   }
 
   void addGrocery() {
-    print('object');
   }
 
   @override

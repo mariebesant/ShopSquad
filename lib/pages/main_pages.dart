@@ -50,7 +50,6 @@ class _MainPagesState extends State<MainPages> {
   }
 
   void addGrocery() {
-    print('object');
   }
 
   @override

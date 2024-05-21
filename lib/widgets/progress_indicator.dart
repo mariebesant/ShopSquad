@@ -41,8 +41,8 @@ class MyProgressIndicator extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: AppSizes.s0_75,),
-        Text('${completedTasks}/${totalTasks}', style: TextStyle(color: AppColors.lightGray, fontSize: AppSizes.s0_75),)
+        const SizedBox(width: AppSizes.s0_75,),
+        Text('$completedTasks/$totalTasks', style: TextStyle(color: AppColors.lightGray, fontSize: AppSizes.s0_75),)
       ],
     );
   }
