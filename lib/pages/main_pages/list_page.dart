@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/list_card.dart';
-import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
 class ListPage extends StatefulWidget {

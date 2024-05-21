@@ -86,12 +86,12 @@ class _MainPagesState extends State<MainPages> {
                 SizedBox(
                   width: AppSizes.s10,
                   height: AppSizes.s3,
-                  child: MyButton(
+                  child: currentIndex == 0 ? MyButton(
                     text: 'EINKAUFEN',
                     color: AppColors.green,
                     backgroundColor: Colors.transparent,
                     onPressed: addGrocery,
-                  ),
+                  ): null,
                 ),
                 SizedBox(
                   width: AppSizes.s10,
