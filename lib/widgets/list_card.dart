@@ -3,16 +3,17 @@ import 'package:shopsquad/pages/main_pages/to_do_page.dart';
 
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/widgets/progress_indicator.dart';
 
 class ListCard extends StatelessWidget {
   const ListCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   final String title;
-  final String subtitle;
+  final MyProgressIndicator subtitle;
 
   static const IconData moneyIcon =
       IconData(0xf1dd, fontFamily: 'MaterialIcons');
@@ -44,14 +45,7 @@ class ListCard extends StatelessWidget {
               title,
               style: TextStyle(color: AppColors.white),
             ),
-            subtitle: Text(
-              subtitle,
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: AppSizes.s0_75,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
+            subtitle: subtitle,
             trailing: Icon(moneyIcon, color: AppColors.white),
           ),
         ),
