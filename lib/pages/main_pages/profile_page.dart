@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/widgets/credits.dart';
 import 'package:shopsquad/widgets/profile.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({super.key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -41,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(
           height: AppSizes.s3_5,
         ),
-        const Profile()
+        Profile()
       ],
     );
   }

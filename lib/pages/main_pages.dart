@@ -4,6 +4,7 @@ import 'package:shopsquad/pages/main_pages/list_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/widgets/create_group.dart';
 import 'package:shopsquad/widgets/my_button.dart';
 import 'package:shopsquad/widgets/my_icon_button.dart';
 
@@ -41,7 +42,9 @@ class _MainPagesState extends State<MainPages> {
         return const ListPage();
       case MainPagesSlides.profile:
         title = 'Dein Profil';
-        return ProfilePage();
+        return const ProfilePage();
+      default:
+        return const ListPage();
     }
   }
 
@@ -54,6 +57,19 @@ class _MainPagesState extends State<MainPages> {
   }
 
   void addGrocery() {}
+
+  void addGroup() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog.fullscreen(
+        child: CreateGroup(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +125,7 @@ class _MainPagesState extends State<MainPages> {
                           text: 'HINZUFÜGEN',
                           color: AppColors.green,
                           backgroundColor: AppColors.accentGray,
-                          onPressed: addGrocery,
+                          onPressed: currentIndex == 0 ? addGrocery : addGroup,
                           icon: Icon(
                             add,
                             color: AppColors.green,
@@ -121,33 +137,34 @@ class _MainPagesState extends State<MainPages> {
             ),
           ),
           Container(
-              height: AppSizes.s6,
-              decoration: BoxDecoration(
-                color: AppColors.accentGray,
+            height: AppSizes.s6,
+            decoration: BoxDecoration(
+              color: AppColors.accentGray,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1_5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MyIconButton(
+                      isSelected: currentIndex == 0,
+                      currentSlide: 'Liste',
+                      onPressed: () => onPressed(0),
+                      icon: listIcon),
+                  MyIconButton(
+                      isSelected: currentIndex == 1,
+                      currentSlide: 'Gruppe',
+                      onPressed: () => onPressed(1),
+                      icon: groupsIcon),
+                  MyIconButton(
+                      isSelected: currentIndex == 2,
+                      currentSlide: 'Profil',
+                      onPressed: () => onPressed(2),
+                      icon: profileIcon)
+                ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1_5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MyIconButton(
-                        isSelected: currentIndex == 0,
-                        currentSlide: 'Liste',
-                        onPressed: () => onPressed(0),
-                        icon: listIcon),
-                    MyIconButton(
-                        isSelected: currentIndex == 1,
-                        currentSlide: 'Gruppe',
-                        onPressed: () => onPressed(1),
-                        icon: groupsIcon),
-                    MyIconButton(
-                        isSelected: currentIndex == 2,
-                        currentSlide: 'Profil',
-                        onPressed: () => onPressed(2),
-                        icon: profileIcon)
-                  ],
-                ),
-              ))
+            ),
+          )
         ],
       ),
     );
