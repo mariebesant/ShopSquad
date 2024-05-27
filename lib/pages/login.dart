@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:shopsquad/pages/homepage.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
@@ -47,7 +48,7 @@ class _LoginState extends State<Login> {
 
       // Navigiere zur Homepage, wenn die Anmeldung erfolgreich ist
       Navigator.of(context).push(MaterialPageRoute<dynamic>(
-        builder: (context) => const Homepage(),
+        builder: (context) => const MainPages(),
       ));
     } else {
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');

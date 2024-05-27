@@ -9,9 +9,10 @@ import 'package:shopsquad/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
 
 class CreateGroup extends StatefulWidget {
-  const CreateGroup({super.key, required this.onPressed});
+  const CreateGroup({super.key, required this.onPressed, required this.onGroupCreated});
 
   final VoidCallback onPressed;
+  final VoidCallback onGroupCreated;  
 
   @override
   State<CreateGroup> createState() => _CreateGroupState();
@@ -20,6 +21,7 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   TextEditingController groupnameController = TextEditingController();
   TextEditingController personController = TextEditingController();
+  bool isLoading = false;  // To track loading state
 
   List<String> groupMembers = [];
 
@@ -44,10 +46,17 @@ class _CreateGroupState extends State<CreateGroup> {
   }
 
   Future<void> newGroup(String groupname) async {
+    setState(() {
+      isLoading = true;  // Start loading
+    });
+
     String? accessToken = localStorage.getItem('accessBearer');
 
     if (accessToken == null) {
       print('Access token not found');
+      setState(() {
+        isLoading = false;  // Stop loading if there's an error
+      });
       return;
     }
     accessToken = accessToken.substring(1, accessToken.length - 1);
@@ -69,11 +78,16 @@ class _CreateGroupState extends State<CreateGroup> {
     if (response.statusCode == 200) {
       print('Request successful');
       print('Response body: ${response.body}');
+      widget.onGroupCreated();  
       widget.onPressed();
     } else {
       print('Request failed with status: ${response.statusCode}');
       print('Response body: ${response.body}');
     }
+
+    setState(() {
+      isLoading = false;  // Stop loading once the request is complete
+    });
   }
 
   @override
@@ -88,13 +102,17 @@ class _CreateGroupState extends State<CreateGroup> {
                 alignment: Alignment.topRight,
                 child: TextButton(
                   onPressed: () {
-                    newGroup(groupnameController.text);
+                    if (!isLoading) {
+                      newGroup(groupnameController.text);
+                    }
                   },
-                  child: Text(
-                    'Fertig',
-                    style: TextStyle(
-                        color: AppColors.green, fontSize: AppSizes.s1),
-                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator(color: AppColors.green)
+                      : Text(
+                          'Fertig',
+                          style: TextStyle(
+                              color: AppColors.green, fontSize: AppSizes.s1),
+                        ),
                 ),
               ),
               Padding(

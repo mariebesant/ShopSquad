@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/to_do_page.dart';
 import 'package:shopsquad/theme/colors.dart';
+import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/list_card.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 
@@ -26,6 +27,8 @@ class _ListPageState extends State<ListPage> {
     },
   ];
 
+  void addList() {}
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,6 +52,7 @@ class _ListPageState extends State<ListPage> {
             }).toList(),
           ),
         ),
+        FooterButtons(onPressedAdd: addList, isShoped: false)
       ],
     );
   }

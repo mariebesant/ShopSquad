@@ -1,15 +1,74 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/main_pages/to_do_page.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:http/http.dart' as http;
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 
-class GroupCard extends StatelessWidget {
-  const GroupCard({super.key, required this.title, required this.onTap});
+class GroupCard extends StatefulWidget {
+  const GroupCard({
+    super.key,
+    required this.title,
+    required this.onTap,
+    required this.id,
+    required this.onLeaveGroup,
+  });
 
   final String title;
   final VoidCallback onTap;
+  final String id;
+  final VoidCallback onLeaveGroup;
 
-  static const IconData dots = IconData(0xe404, fontFamily: 'MaterialIcons');
+  @override
+  _GroupCardState createState() => _GroupCardState();
+}
+
+class _GroupCardState extends State<GroupCard> {
+  bool _isLoading = false;
+
+  static const IconData deleteIcon = IconData(0xf696, fontFamily: 'MaterialIcons');
+
+  Future<void> leaveGroup(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String? accessToken = localStorage.getItem('accessBearer');
+    if (accessToken == null) {
+      print('Access token not found');
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+    
+    accessToken = accessToken.substring(1, accessToken.length - 1);
+    print(widget.id);
+
+    final url = 'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/leave/${widget.id}';
+
+    final response = await http.put(
+      Uri.parse(url),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        'squadId': widget.id,
+        'Content-Type': 'application/json',
+      },
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (response.statusCode == 200) {
+      print('Successfully left the group');
+      widget.onLeaveGroup();
+    } else {
+      print('Failed to leave the group with status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +78,7 @@ class GroupCard extends StatelessWidget {
         horizontal: AppSizes.s1,
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.accentGray,
@@ -27,10 +86,15 @@ class GroupCard extends StatelessWidget {
           ),
           child: ListTile(
             title: Text(
-              title,
+              widget.title,
               style: TextStyle(color: AppColors.white),
             ),
-            trailing: Icon(dots, color: AppColors.white),
+            trailing: _isLoading
+                ? CircularProgressIndicator(color: AppColors.white)
+                : IconButton(
+                    icon: Icon(deleteIcon, color: AppColors.white),
+                    onPressed: () => leaveGroup(context),
+                  ),
           ),
         ),
       ),

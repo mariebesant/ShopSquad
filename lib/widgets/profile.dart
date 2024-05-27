@@ -22,11 +22,12 @@ class Profile extends StatelessWidget {
               horizontal: AppSizes.s1_25, vertical: AppSizes.s0_75),
           child: GestureDetector(
             onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<dynamic>(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute<dynamic>(
+                  builder: (context) => LoginPage(),
+                ),
+                (route) => false,
+              );
               localStorage.clear();
             },
             child: Row(

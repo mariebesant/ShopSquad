@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/group_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
-import 'package:shopsquad/widgets/to_do.dart';
+import 'package:shopsquad/pages/main_pages/to_do.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_button.dart';
@@ -84,38 +84,6 @@ class _ToDoPageState extends State<ToDoPage> {
               },
               controller: _controller,
               itemCount: _content.length,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppSizes.s1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: AppSizes.s10,
-                  height: AppSizes.s3,
-                  child: MyButton(
-                    text: 'EINKAUFEN',
-                    color: AppColors.green,
-                    backgroundColor: Colors.transparent,
-                    onPressed: addGrocery,
-                  ),
-                ),
-                SizedBox(
-                  width: AppSizes.s10,
-                  height: AppSizes.s3,
-                  child: MyButton(
-                    text: 'HINZUFÜGEN',
-                    color: AppColors.green,
-                    backgroundColor: AppColors.accentGray,
-                    onPressed: addGrocery,
-                    icon: Icon(
-                      add,
-                      color: AppColors.green,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
           Container(

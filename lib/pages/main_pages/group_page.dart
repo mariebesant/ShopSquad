@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:shopsquad/widgets/create_group.dart';
+import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/group_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,7 +17,7 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  List<dynamic> squadNames = [];
+  List<Map<String, String>> squadNames = [];
 
   @override
   void initState() {
@@ -38,8 +38,7 @@ class _GroupPageState extends State<GroupPage> {
       Uri.parse(
           'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/user'),
       headers: {
-        HttpHeaders.authorizationHeader:
-            'Bearer $accessToken',
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
       },
     );
 
@@ -50,11 +49,31 @@ class _GroupPageState extends State<GroupPage> {
       print('Top');
       setState(() {
         List<dynamic> responseList = json.decode(response.body);
-        squadNames = responseList.map((item) => item['squadName'].toString()).toList();
+        squadNames = responseList.map((item) {
+          return {
+            'id': item['id'].toString(),
+            'squadName': item['squadName'].toString()
+          };
+        }).toList();
       });
     } else {
       // Handle the error
     }
+  }
+
+  void addGroup() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog.fullscreen(
+        child: CreateGroup(
+          onPressed: () {
+            Navigator.pop(context);
+            fetchGroupCardInfo(); // Updated to call the method instead of referencing it
+          },
+          onGroupCreated: fetchGroupCardInfo, 
+        ),
+      ),
+    );
   }
 
   @override
@@ -63,14 +82,17 @@ class _GroupPageState extends State<GroupPage> {
       children: [
         Expanded(
           child: ListView(
-            children: squadNames.map((name) {
+            children: squadNames.map((squad) {
               return GroupCard(
                 onTap: () {},
-                title: name,
+                title: squad['squadName']!,
+                id: squad['id']!,
+                onLeaveGroup: fetchGroupCardInfo, // Pass the refresh callback
               );
             }).toList(),
           ),
         ),
+        FooterButtons(onPressedAdd: addGroup, isShoped: false)
       ],
     );
   }

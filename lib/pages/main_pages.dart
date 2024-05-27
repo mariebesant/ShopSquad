@@ -56,20 +56,6 @@ class _MainPagesState extends State<MainPages> {
     });
   }
 
-  void addGrocery() {}
-
-  void addGroup() {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => Dialog.fullscreen(
-        child: CreateGroup(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,42 +84,6 @@ class _MainPagesState extends State<MainPages> {
               },
               controller: _controller,
               itemCount: _content.length,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppSizes.s1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: AppSizes.s10,
-                  height: AppSizes.s3,
-                  child: currentIndex == 0
-                      ? MyButton(
-                          text: 'EINKAUFEN',
-                          color: AppColors.green,
-                          backgroundColor: Colors.transparent,
-                          onPressed: addGrocery,
-                        )
-                      : null,
-                ),
-                SizedBox(
-                  width: AppSizes.s10,
-                  height: AppSizes.s3,
-                  child: currentIndex != 2
-                      ? MyButton(
-                          text: 'HINZUFÜGEN',
-                          color: AppColors.green,
-                          backgroundColor: AppColors.accentGray,
-                          onPressed: currentIndex == 0 ? addGrocery : addGroup,
-                          icon: Icon(
-                            add,
-                            color: AppColors.green,
-                          ),
-                        )
-                      : null,
-                ),
-              ],
             ),
           ),
           Container(
