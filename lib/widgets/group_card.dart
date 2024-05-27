@@ -28,6 +28,8 @@ class _GroupCardState extends State<GroupCard> {
   bool _isLoading = false;
 
   static const IconData deleteIcon = IconData(0xf696, fontFamily: 'MaterialIcons');
+  static const IconData shareIcon = Icons.share;
+  static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
 
   Future<void> leaveGroup(BuildContext context) async {
     setState(() {
@@ -70,6 +72,46 @@ class _GroupCardState extends State<GroupCard> {
     }
   }
 
+  void showOptionsDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: !_isLoading, // Prevent dismissing when loading
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+              leading: Icon(deleteIcon),
+              title: Text('Verlassen'),
+              onTap: () {
+                      Navigator.of(context).pop();
+                      leaveGroup(context);
+                    },
+            ),
+            ListTile(
+              leading: Icon(shareIcon),
+              title: Text('Gruppen ID teilen'),
+              onTap: () {
+                Navigator.of(context).pop();
+                // Add share functionality here
+              },
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Abbrechen'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,12 +131,10 @@ class _GroupCardState extends State<GroupCard> {
               widget.title,
               style: TextStyle(color: AppColors.white),
             ),
-            trailing: _isLoading
-                ? CircularProgressIndicator(color: AppColors.white)
-                : IconButton(
-                    icon: Icon(deleteIcon, color: AppColors.white),
-                    onPressed: () => leaveGroup(context),
-                  ),
+            trailing: IconButton(
+              icon: Icon(menu, color: AppColors.white),
+              onPressed: () => showOptionsDialog(context),
+            ),
           ),
         ),
       ),
