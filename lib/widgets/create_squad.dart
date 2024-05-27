@@ -2,31 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
-import 'package:shopsquad/services/group_service.dart';
+import 'package:shopsquad/services/squad_service.dart';
 
-class CreateGroup extends StatefulWidget {
-  const CreateGroup({super.key, required this.onPressed, required this.onGroupCreated});
+class CreateSquad extends StatefulWidget {
+  const CreateSquad(
+      {super.key, required this.onPressed, required this.onGroupCreated});
 
   final VoidCallback onPressed;
   final VoidCallback onGroupCreated;
 
   @override
-  State<CreateGroup> createState() => _CreateGroupState();
+  State<CreateSquad> createState() => _CreateSquadState();
 }
 
-class _CreateGroupState extends State<CreateGroup> {
+class _CreateSquadState extends State<CreateSquad> {
   TextEditingController groupnameController = TextEditingController();
   TextEditingController personController = TextEditingController();
-  bool isLoading = false; 
+  bool isLoading = false;
 
-  static const IconData backIcon = IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
+  static const IconData backIcon =
+      IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
   List<String> groupMembers = [];
 
   static const IconData addIcon = IconData(0xf52c, fontFamily: 'MaterialIcons');
-  static const IconData removeIcon = IconData(0xf00eb, fontFamily: 'MaterialIcons');
+  static const IconData removeIcon =
+      IconData(0xf00eb, fontFamily: 'MaterialIcons');
 
-  final GroupService groupService = GroupService();
+  final SquadService groupService = SquadService();
 
   void addPerson() {
     String person = personController.text;
@@ -62,7 +65,8 @@ class _CreateGroupState extends State<CreateGroup> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Fehler'),
-            content: Text('Request failed with status: ${response?.statusCode}\nResponse: ${response?.body}'),
+            content: Text(
+                'Request failed with status: ${response?.statusCode}\nResponse: ${response?.body}'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -90,7 +94,10 @@ class _CreateGroupState extends State<CreateGroup> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(backIcon, color: AppColors.white,),
+          icon: Icon(
+            backIcon,
+            color: AppColors.white,
+          ),
         ),
         actions: [
           TextButton(

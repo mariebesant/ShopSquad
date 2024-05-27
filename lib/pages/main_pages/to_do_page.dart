@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/main_pages/group_page.dart';
+import 'package:shopsquad/pages/main_pages/squad_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/pages/main_pages/to_do.dart';
@@ -34,7 +34,7 @@ class _ToDoPageState extends State<ToDoPage> {
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
-        return const GroupPage();
+        return const SquadPage();
       case MainPagesSlides.list:
         return const ToDo();
       case MainPagesSlides.profile:

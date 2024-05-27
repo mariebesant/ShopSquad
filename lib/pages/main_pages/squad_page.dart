@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/widgets/create_group.dart';
+import 'package:shopsquad/widgets/create_squad.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
-import 'package:shopsquad/widgets/group_card.dart';
-import 'package:shopsquad/services/group_service.dart';
-import 'package:shopsquad/widgets/join_group.dart';
+import 'package:shopsquad/widgets/squad_card.dart';
+import 'package:shopsquad/services/squad_service.dart';
+import 'package:shopsquad/widgets/join_squad.dart';
 
-class GroupPage extends StatefulWidget {
-  const GroupPage({super.key});
+class SquadPage extends StatefulWidget {
+  const SquadPage({super.key});
 
   static const IconData dots = IconData(0xe404, fontFamily: 'MaterialIcons');
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<SquadPage> createState() => _SquadPageState();
 }
 
-class _GroupPageState extends State<GroupPage> {
+class _SquadPageState extends State<SquadPage> {
   List<Map<String, String>> squadNames = [];
-  final GroupService groupService = GroupService();
+  final SquadService groupService = SquadService();
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _GroupPageState extends State<GroupPage> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog.fullscreen(
-        child: CreateGroup(
+        child: CreateSquad(
           onPressed: () {
             Navigator.pop(context);
             groupCardInfo();
@@ -55,7 +55,7 @@ class _GroupPageState extends State<GroupPage> {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => Dialog.fullscreen(
-        child: JoinGroup(
+        child: JoinSquad(
           onPressed: () {
             Navigator.pop(context);
             groupCardInfo();
@@ -66,6 +66,16 @@ class _GroupPageState extends State<GroupPage> {
     );
   }
 
+  Future<void> changeCurrentSquad(String id) async {
+    final response = await groupService.changeCurrentSquad(id);
+    if (response != null && response.statusCode == 200) {
+      print('Successfully changed current squad');
+    } else {
+      print('Failed to change current squad');
+      print(response!.statusCode);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -73,8 +83,8 @@ class _GroupPageState extends State<GroupPage> {
         Expanded(
           child: ListView(
             children: squadNames.map((squad) {
-              return GroupCard(
-                onTap: () {},
+              return SquadCard(
+                onTap: () => changeCurrentSquad(squad['id']!),
                 title: squad['squadName']!,
                 id: squad['id']!,
                 onLeaveGroup: groupCardInfo, // Pass the refresh callback

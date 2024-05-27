@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'auth_service.dart';
 
-class GroupService {
+class SquadService {
   final AuthService authService = AuthService();
 
   Future<http.Response?> createGroup(String groupname) async {
@@ -31,7 +31,7 @@ class GroupService {
     return response;
   }
 
-  Future<bool> leaveGroup(String groupId) async {
+  Future<bool> leaveGroup(String squadID) async {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
@@ -40,7 +40,7 @@ class GroupService {
     }
 
     final url =
-        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/leave/$groupId';
+        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/leave/$squadID';
 
     final response = await http.put(
       Uri.parse(url),
@@ -60,7 +60,7 @@ class GroupService {
     }
   }
 
-  Future<http.Response?> joinGroup(String groupId) async {
+  Future<http.Response?> joinGroup(String squadId) async {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
@@ -69,7 +69,7 @@ class GroupService {
     }
 
     final url =
-        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/join/$groupId';
+        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/join/$squadId';
 
     final response = await http.put(
       Uri.parse(url),
@@ -85,6 +85,50 @@ class GroupService {
     } else {
       print('Failed to leave the group with status: ${response.statusCode}');
       print('Response body: ${response.body}');
+      return null;
+    }
+  }
+
+  Future<http.Response?> changeCurrentSquad(String squadId) async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.put(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/user/currentSquad/$squadId'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+    );
+    return response;
+  }
+
+  Future<String?> currentSquad() async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.get(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/user/currentSquad'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseData = json.decode(response.body);
+      return responseData['squadName'];
+    } else {
+      // Handle den Fehler entsprechend
       return null;
     }
   }

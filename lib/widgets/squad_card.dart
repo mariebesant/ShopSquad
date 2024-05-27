@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/services/group_service.dart';
+import 'package:shopsquad/services/squad_service.dart';
 
-class GroupCard extends StatefulWidget {
-  const GroupCard({
+class SquadCard extends StatefulWidget {
+  const SquadCard({
     super.key,
     required this.title,
     required this.onTap,
@@ -19,12 +19,12 @@ class GroupCard extends StatefulWidget {
   final VoidCallback onLeaveGroup;
 
   @override
-  _GroupCardState createState() => _GroupCardState();
+  _SquadCardState createState() => _SquadCardState();
 }
 
-class _GroupCardState extends State<GroupCard> {
+class _SquadCardState extends State<SquadCard> {
   bool _isLoading = false;
-  final GroupService groupService = GroupService();
+  final SquadService groupService = SquadService();
 
   static const IconData deleteIcon =
       IconData(0xf696, fontFamily: 'MaterialIcons');

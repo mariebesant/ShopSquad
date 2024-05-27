@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/add_group.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/widgets/join_group.dart';
+import 'package:shopsquad/widgets/join_squad.dart';
 import 'package:shopsquad/widgets/my_button.dart';
 
 class Homepage extends StatelessWidget {
@@ -50,7 +50,7 @@ class Homepage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) => Dialog.fullscreen(
-                      child: JoinGroup(
+                      child: JoinSquad(
                         navigate: 'Homepage',
                         onPressed: () {
                           Navigator.pop(context);

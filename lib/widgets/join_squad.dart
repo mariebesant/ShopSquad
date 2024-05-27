@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/homepage.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
-import 'package:shopsquad/services/group_service.dart';
+import 'package:shopsquad/services/squad_service.dart';
 
-class JoinGroup extends StatefulWidget {
-  const JoinGroup(
+class JoinSquad extends StatefulWidget {
+  const JoinSquad(
       {super.key,
       required this.onPressed,
       required this.onGroupCreated,
@@ -17,17 +18,17 @@ class JoinGroup extends StatefulWidget {
   final String? navigate;
 
   @override
-  State<JoinGroup> createState() => _JoinGroupState();
+  State<JoinSquad> createState() => _JoinSquadState();
 }
 
-class _JoinGroupState extends State<JoinGroup> {
+class _JoinSquadState extends State<JoinSquad> {
   TextEditingController groupIDController = TextEditingController();
   bool isLoading = false;
 
   static const IconData backIcon =
       IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
-  final GroupService groupService = GroupService();
+  final SquadService groupService = SquadService();
 
   Future<void> joinGroup(String id) async {
     setState(() {
@@ -86,11 +87,13 @@ class _JoinGroupState extends State<JoinGroup> {
             onPressed: () {
               if (!isLoading) {
                 joinGroup(groupIDController.text);
-                widget.navigate == 'homepage' ? Navigator.of(context).push(
-                    MaterialPageRoute<dynamic>(
-                      builder: (context) => const Homepage(),
-                    ),
-                  ):null;
+                widget.navigate == 'homepage'
+                    ? Navigator.of(context).push(
+                        MaterialPageRoute<dynamic>(
+                          builder: (context) => const MainPages(),
+                        ),
+                      )
+                    : null;
               }
             },
             child: isLoading

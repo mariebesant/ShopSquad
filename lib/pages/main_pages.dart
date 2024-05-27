@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/main_pages/group_page.dart';
+import 'package:shopsquad/pages/main_pages/squad_page.dart';
 import 'package:shopsquad/pages/main_pages/list_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
+import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/widgets/create_group.dart';
-import 'package:shopsquad/widgets/my_button.dart';
 import 'package:shopsquad/widgets/my_icon_button.dart';
 
 enum MainPagesSlides { list, group, profile }
@@ -22,7 +21,10 @@ class _MainPagesState extends State<MainPages> {
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
   bool isSelected = false;
-  String title = 'Deine Listen';
+  String currentSquad = '';
+  String title = '';
+
+  final SquadService groupService = SquadService();
 
   static const IconData profileIcon =
       IconData(0xee35, fontFamily: 'MaterialIcons');
@@ -32,13 +34,27 @@ class _MainPagesState extends State<MainPages> {
       IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
   static const IconData add = IconData(0xe047, fontFamily: 'MaterialIcons');
 
+  @override
+  void initState() {
+    loadCurrentSquad();
+    super.initState();
+  }
+
+  Future<void> loadCurrentSquad() async {
+    final squad = await groupService.currentSquad();
+    print(squad);
+    setState(() {
+      currentSquad = squad ?? 'Gruppe';
+    });
+  }
+
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
-        title = 'Deine Gruppen';
-        return const GroupPage();
+        title = currentSquad;
+        return const SquadPage();
       case MainPagesSlides.list:
-        title = 'Deine Listen';
+        title = currentSquad;
         return const ListPage();
       case MainPagesSlides.profile:
         title = 'Dein Profil';
@@ -56,7 +72,6 @@ class _MainPagesState extends State<MainPages> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,9 +88,7 @@ class _MainPagesState extends State<MainPages> {
           Expanded(
             child: PageView.builder(
               onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
+                onPressed(index); // Ensure title is updated on page change
               },
               itemBuilder: (context, index) {
                 return Center(
