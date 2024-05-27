@@ -38,6 +38,7 @@ dependencies:
   http: ^1.2.1
   device_info_plus: ^10.1.0
   localstorage: ^5.0.0
+  share_plus: ^9.0.0
 
 dev_dependencies:
   flutter_test:
