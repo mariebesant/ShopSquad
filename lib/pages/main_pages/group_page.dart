@@ -65,6 +65,7 @@ class _GroupPageState extends State<GroupPage> {
           child: ListView(
             children: squadNames.map((name) {
               return GroupCard(
+                onTap: () {},
                 title: name,
               );
             }).toList(),

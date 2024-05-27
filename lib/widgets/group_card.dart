@@ -4,9 +4,10 @@ import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 
 class GroupCard extends StatelessWidget {
-  const GroupCard({super.key, required this.title});
+  const GroupCard({super.key, required this.title, required this.onTap});
 
   final String title;
+  final VoidCallback onTap;
 
   static const IconData dots = IconData(0xe404, fontFamily: 'MaterialIcons');
 
@@ -18,13 +19,7 @@ class GroupCard extends StatelessWidget {
         horizontal: AppSizes.s1,
       ),
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const ToDoPage(),
-            ),
-          );
-        },
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.accentGray,
