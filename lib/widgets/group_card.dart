@@ -18,10 +18,8 @@ class GroupCard extends StatelessWidget {
         horizontal: AppSizes.s1,
       ),
       child: InkWell(
-        // Wrap Container with InkWell to make it clickable
         onTap: () {
           Navigator.of(context).push(
-            // Navigate to ListPage
             MaterialPageRoute(
               builder: (context) => const ToDoPage(),
             ),

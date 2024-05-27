@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:shopsquad/pages/login_page.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 
@@ -19,7 +21,14 @@ class Profile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.s1_25, vertical: AppSizes.s0_75),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<dynamic>(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+              localStorage.clear();
+            },
             child: Row(
               children: [
                 Icon(

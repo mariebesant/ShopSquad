@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
+import 'package:http/http.dart' as http;
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key, required this.onPressed});
@@ -38,6 +43,39 @@ class _CreateGroupState extends State<CreateGroup> {
     });
   }
 
+  Future<void> newGroup(String groupname) async {
+    String? accessToken = localStorage.getItem('accessBearer');
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return;
+    }
+    accessToken = accessToken.substring(1, accessToken.length - 1);
+
+    String url =
+        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads';
+    Map<String, dynamic> body = {"squadName": groupname};
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+      body: jsonEncode(body),
+    );
+
+    // Handle the response
+    if (response.statusCode == 200) {
+      print('Request successful');
+      print('Response body: ${response.body}');
+      widget.onPressed();
+    } else {
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +87,9 @@ class _CreateGroupState extends State<CreateGroup> {
               Align(
                 alignment: Alignment.topRight,
                 child: TextButton(
-                  onPressed: widget.onPressed,
+                  onPressed: () {
+                    newGroup(groupnameController.text);
+                  },
                   child: Text(
                     'Fertig',
                     style: TextStyle(

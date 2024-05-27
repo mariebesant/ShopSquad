@@ -53,7 +53,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // String? accessBearer;
 
   @override
   void initState() {
