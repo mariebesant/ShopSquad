@@ -5,11 +5,14 @@ import 'package:shopsquad/widgets/my_button.dart';
 
 class FooterButtons extends StatelessWidget {
   const FooterButtons(
-      {super.key, required this.onPressedAdd, required this.isShoped, this.completeShopping});
+      {super.key,
+      required this.onPressedAdd,
+      this.buttonText,
+      this.seconButtonPressed});
 
   final VoidCallback onPressedAdd;
-  final bool isShoped;
-  final VoidCallback? completeShopping;
+  final String? buttonText;
+  final VoidCallback? seconButtonPressed;
 
   static const IconData add = IconData(0xe047, fontFamily: 'MaterialIcons');
 
@@ -23,29 +26,28 @@ class FooterButtons extends StatelessWidget {
           SizedBox(
             width: AppSizes.s10,
             height: AppSizes.s3,
-            child: isShoped
+            child: buttonText != null
                 ? MyButton(
-                    text: 'EINKAUFEN',
+                    text: buttonText!,
                     color: AppColors.green,
                     backgroundColor: Colors.transparent,
-                    onPressed: completeShopping!,
+                    onPressed: seconButtonPressed!,
                   )
                 : null,
           ),
           SizedBox(
-            width: AppSizes.s10,
-            height: AppSizes.s3,
-            child: MyButton(
-                    text: 'HINZUFÜGEN',
-                    color: AppColors.green,
-                    backgroundColor: AppColors.accentGray,
-                    onPressed: onPressedAdd,
-                    icon: Icon(
-                      add,
-                      color: AppColors.green,
-                    ),
-                  )
-          ),
+              width: AppSizes.s10,
+              height: AppSizes.s3,
+              child: MyButton(
+                text: 'HINZUFÜGEN',
+                color: AppColors.green,
+                backgroundColor: AppColors.accentGray,
+                onPressed: onPressedAdd,
+                icon: Icon(
+                  add,
+                  color: AppColors.green,
+                ),
+              )),
         ],
       ),
     );

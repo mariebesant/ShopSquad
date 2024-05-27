@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:http/http.dart' as http;
 import 'package:share_plus/share_plus.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/services/group_service.dart';
 
 class GroupCard extends StatefulWidget {
   const GroupCard({
@@ -27,6 +24,7 @@ class GroupCard extends StatefulWidget {
 
 class _GroupCardState extends State<GroupCard> {
   bool _isLoading = false;
+  final GroupService groupService = GroupService();
 
   static const IconData deleteIcon =
       IconData(0xf696, fontFamily: 'MaterialIcons');
@@ -38,40 +36,18 @@ class _GroupCardState extends State<GroupCard> {
       _isLoading = true;
     });
 
-    String? accessToken = localStorage.getItem('accessBearer');
-    if (accessToken == null) {
-      print('Access token not found');
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-
-    accessToken = accessToken.substring(1, accessToken.length - 1);
-    print(widget.id);
-
-    final url =
-        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/leave/${widget.id}';
-
-    final response = await http.put(
-      Uri.parse(url),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
-        'squadId': widget.id,
-        'Content-Type': 'application/json',
-      },
-    );
+    bool success = await groupService.leaveGroup(widget.id);
 
     setState(() {
       _isLoading = false;
     });
 
-    if (response.statusCode == 200) {
-      print('Successfully left the group');
+    if (success) {
       widget.onLeaveGroup();
     } else {
-      print('Failed to leave the group with status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to leave the group')),
+      );
     }
   }
 
@@ -104,7 +80,6 @@ class _GroupCardState extends State<GroupCard> {
                 onTap: () {
                   Navigator.of(context).pop();
                   shareGroup(id);
-                  // Add share functionality here
                 },
               ),
             ],

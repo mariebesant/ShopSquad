@@ -52,7 +52,7 @@ class _ListPageState extends State<ListPage> {
             }).toList(),
           ),
         ),
-        FooterButtons(onPressedAdd: addList, isShoped: false)
+        FooterButtons(onPressedAdd: addList)
       ],
     );
   }

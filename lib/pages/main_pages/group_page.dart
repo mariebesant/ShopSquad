@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:shopsquad/widgets/create_group.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/group_card.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:shopsquad/services/group_service.dart';
+import 'package:shopsquad/widgets/join_group.dart';
 
 class GroupPage extends StatefulWidget {
   const GroupPage({super.key});
@@ -18,46 +16,23 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> {
   List<Map<String, String>> squadNames = [];
+  final GroupService groupService = GroupService();
 
   @override
   void initState() {
     super.initState();
-    fetchGroupCardInfo();
+    groupCardInfo();
   }
 
-  Future<void> fetchGroupCardInfo() async {
-    print('Top');
-    String? accessToken = localStorage.getItem('accessBearer');
-    if (accessToken == null) {
-      print('Access token not found');
-      return;
-    }
-    accessToken = accessToken.substring(1, accessToken.length - 1);
+  Future<void> groupCardInfo() async {
+    final squadList = await groupService.groupCardInfo();
 
-    final response = await http.get(
-      Uri.parse(
-          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/squads/user'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
-      },
-    );
-
-    print(accessToken);
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      print('Top');
+    if (squadList != null) {
       setState(() {
-        List<dynamic> responseList = json.decode(response.body);
-        squadNames = responseList.map((item) {
-          return {
-            'id': item['id'].toString(),
-            'squadName': item['squadName'].toString()
-          };
-        }).toList();
+        squadNames = squadList;
       });
     } else {
-      // Handle the error
+      print('Failed to fetch squad info');
     }
   }
 
@@ -68,9 +43,24 @@ class _GroupPageState extends State<GroupPage> {
         child: CreateGroup(
           onPressed: () {
             Navigator.pop(context);
-            fetchGroupCardInfo(); // Updated to call the method instead of referencing it
+            groupCardInfo();
           },
-          onGroupCreated: fetchGroupCardInfo, 
+          onGroupCreated: groupCardInfo,
+        ),
+      ),
+    );
+  }
+
+  void joinGroup() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog.fullscreen(
+        child: JoinGroup(
+          onPressed: () {
+            Navigator.pop(context);
+            groupCardInfo();
+          },
+          onGroupCreated: groupCardInfo,
         ),
       ),
     );
@@ -87,12 +77,16 @@ class _GroupPageState extends State<GroupPage> {
                 onTap: () {},
                 title: squad['squadName']!,
                 id: squad['id']!,
-                onLeaveGroup: fetchGroupCardInfo, // Pass the refresh callback
+                onLeaveGroup: groupCardInfo, // Pass the refresh callback
               );
             }).toList(),
           ),
         ),
-        FooterButtons(onPressedAdd: addGroup, isShoped: false)
+        FooterButtons(
+          onPressedAdd: addGroup,
+          buttonText: 'BEITRETEN',
+          seconButtonPressed: joinGroup,
+        )
       ],
     );
   }

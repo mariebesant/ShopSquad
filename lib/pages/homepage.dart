@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/add_group.dart';
-import 'package:shopsquad/pages/join_group.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/widgets/join_group.dart';
 import 'package:shopsquad/widgets/my_button.dart';
 
 class Homepage extends StatelessWidget {
@@ -47,9 +47,18 @@ class Homepage extends StatelessWidget {
                 backgroundColor: AppColors.accentGray,
                 color: AppColors.white,
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<dynamic>(
-                      builder: (context) => const JoinGroup(),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => Dialog.fullscreen(
+                      child: JoinGroup(
+                        navigate: 'Homepage',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        onGroupCreated: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   );
                 },

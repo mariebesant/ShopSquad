@@ -51,7 +51,11 @@ class _ToDoState extends State<ToDo> {
             }).toList(),
           ),
         ),
-        FooterButtons(onPressedAdd: addGrocery, isShoped: true, completeShopping: completeShopping,)
+        FooterButtons(
+          onPressedAdd: addGrocery,
+          buttonText: 'EINKAUFEN',
+          seconButtonPressed: completeShopping,
+        )
       ],
     );
   }
