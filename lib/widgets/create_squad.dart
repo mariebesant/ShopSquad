@@ -64,12 +64,12 @@ class _CreateSquadState extends State<CreateSquad> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Fehler'),
+            title: const Text('Fehler'),
             content: Text(
                 'Request failed with status: ${response?.statusCode}\nResponse: ${response?.body}'),
             actions: <Widget>[
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

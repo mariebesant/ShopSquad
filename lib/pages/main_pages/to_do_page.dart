@@ -5,7 +5,6 @@ import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/pages/main_pages/to_do.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/widgets/my_button.dart';
 import 'package:shopsquad/widgets/my_icon_button.dart';
 
 enum MainPagesSlides { list, group, profile }
@@ -29,7 +28,6 @@ class _ToDoPageState extends State<ToDoPage> {
       IconData(0xf08a8, fontFamily: 'MaterialIcons');
   static const IconData listIcon =
       IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
-  static const IconData add = IconData(0xe047, fontFamily: 'MaterialIcons');
 
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
@@ -38,7 +36,7 @@ class _ToDoPageState extends State<ToDoPage> {
       case MainPagesSlides.list:
         return const ToDo();
       case MainPagesSlides.profile:
-        return ProfilePage();
+        return const ProfilePage();
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
-import 'package:shopsquad/theme/sizes.dart';
-import 'package:shopsquad/widgets/progress_indicator.dart';
+import 'package:shopsquad/theme/sizes.dart'; 
 
 class ListCard extends StatelessWidget {
   const ListCard({

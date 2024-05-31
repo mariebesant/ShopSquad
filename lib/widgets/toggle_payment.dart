@@ -34,9 +34,9 @@ class _TogglePaymentState extends State<TogglePayment> {
           showSelectedIcon: false,
           selected: _segmentedButtonSelection,
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
+            backgroundColor: WidgetStateProperty.resolveWith<Color>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.selected)) {
                   return AppColors.green; // Die Farbe für ausgewählte Zustände
                 }
                 return AppColors

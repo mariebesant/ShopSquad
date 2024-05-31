@@ -66,19 +66,19 @@ abstract final class AppThemes {
 
   static OutlinedButtonThemeData outlinedButton = OutlinedButtonThemeData(
     style: ButtonStyle(
-      padding: MaterialStateProperty.all(
+      padding: WidgetStateProperty.all(
         const EdgeInsets.symmetric(
           horizontal: AppSizes.s1_5,
           vertical: AppSizes.s0_75,
         ),
       ),
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.s0_125),
         ),
       ),
       textStyle:
-          MaterialStateProperty.all(AppThemes.bold.merge(AppThemes.boehringer)),
+          WidgetStateProperty.all(AppThemes.bold.merge(AppThemes.boehringer)),
     ),
   );
 

@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         const SizedBox(
           height: AppSizes.s3_5,
         ),
-        Profile()
+        const Profile()
       ],
     );
   }

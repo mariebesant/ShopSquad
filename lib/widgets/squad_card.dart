@@ -19,10 +19,10 @@ class SquadCard extends StatefulWidget {
   final VoidCallback onLeaveGroup;
 
   @override
-  _SquadCardState createState() => _SquadCardState();
+  SquadCardState createState() => SquadCardState();
 }
 
-class _SquadCardState extends State<SquadCard> {
+class SquadCardState extends State<SquadCard> {
   bool _isLoading = false;
   final SquadService groupService = SquadService();
 
@@ -46,7 +46,7 @@ class _SquadCardState extends State<SquadCard> {
       widget.onLeaveGroup();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to leave the group')),
+        const SnackBar(content: Text('Failed to leave the group')),
       );
     }
   }
@@ -67,16 +67,16 @@ class _SquadCardState extends State<SquadCard> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                leading: Icon(deleteIcon),
-                title: Text('Verlassen'),
+                leading: const Icon(deleteIcon),
+                title: const Text('Verlassen'),
                 onTap: () {
                   Navigator.of(context).pop();
                   leaveGroup(context);
                 },
               ),
               ListTile(
-                leading: Icon(shareIcon),
-                title: Text('Gruppen ID teilen'),
+                leading: const Icon(shareIcon),
+                title: const Text('Gruppen ID teilen'),
                 onTap: () {
                   Navigator.of(context).pop();
                   shareGroup(id);
@@ -86,7 +86,7 @@ class _SquadCardState extends State<SquadCard> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Abbrechen'),
+              child: const Text('Abbrechen'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

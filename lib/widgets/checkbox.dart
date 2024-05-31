@@ -17,8 +17,8 @@ class _CheckboxExampleState extends State<CheckboxExample> {
     return Checkbox( 
       shape: const CircleBorder(),
       checkColor: AppColors.success, 
-      fillColor: MaterialStateProperty.resolveWith<Color?>(
-        (Set<MaterialState> states) {
+      fillColor: WidgetStateProperty.resolveWith<Color?>(
+        (Set<WidgetState> states) {
           return Colors.transparent;
         },
       ),

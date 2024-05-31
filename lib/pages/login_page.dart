@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<dynamic>(
-                      builder: (context) => Login(),
+                      builder: (context) => const Login(),
                     ),
                   );
                 },

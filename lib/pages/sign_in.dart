@@ -9,7 +9,7 @@ import 'package:shopsquad/widgets/my_textfield.dart';
 import 'package:shopsquad/widgets/toggle_payment.dart';
 
 class SignIn extends StatefulWidget {
-  SignIn({Key? key});
+  const SignIn({super.key});
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -68,11 +68,11 @@ class _SignInState extends State<SignIn> {
       backgroundColor: AppColors.background,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(AppSizes.s1),
+          padding: const EdgeInsets.all(AppSizes.s1),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: AppSizes.s5),
+              const SizedBox(height: AppSizes.s5),
               MyTextField(
                   controller: usernameController,
                   text: 'Benutzername',
@@ -81,7 +81,7 @@ class _SignInState extends State<SignIn> {
                   controller: passwordController,
                   text: 'Passwort',
                   isPassword: true),
-              TogglePayment(),
+              const TogglePayment(),
             ],
           ),
         ),

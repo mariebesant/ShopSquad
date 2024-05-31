@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: const ColorScheme.light().copyWith(
-          background: AppColors.white,
+          // background: AppColors.white,
           primary: AppColors.background,
           secondary: AppColors.lightGray,
           surface: AppColors.lightGray,
@@ -62,8 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return localStorage.getItem('accessBearer') == null
-        ? LoginPage()
-        : MainPages();
+        ? const LoginPage()
+        : const MainPages();
     // return LoginPage();
   }
 }

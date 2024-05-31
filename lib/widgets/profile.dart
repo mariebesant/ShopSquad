@@ -14,7 +14,6 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Column(
       children: [
         Padding(
@@ -24,7 +23,7 @@ class Profile extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute<dynamic>(
-                  builder: (context) => LoginPage(),
+                  builder: (context) => const LoginPage(),
                 ),
                 (route) => false,
               );

@@ -73,7 +73,7 @@ class _SquadPageState extends State<SquadPage> {
       print('Successfully changed current squad');
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute<dynamic>(
-          builder: (context) => MainPages(),
+          builder: (context) => const MainPages(),
         ),
         (route) => false,
       );
