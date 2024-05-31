@@ -22,11 +22,11 @@ class _SquadPageState extends State<SquadPage> {
   @override
   void initState() {
     super.initState();
-    groupCardInfo();
+    squadCardInfo();
   }
 
-  Future<void> groupCardInfo() async {
-    final squadList = await groupService.groupCardInfo();
+  Future<void> squadCardInfo() async {
+    final squadList = await groupService.squadCardInfo();
 
     if (squadList != null) {
       setState(() {
@@ -44,9 +44,9 @@ class _SquadPageState extends State<SquadPage> {
         child: CreateSquad(
           onPressed: () {
             Navigator.pop(context);
-            groupCardInfo();
+            squadCardInfo();
           },
-          onGroupCreated: groupCardInfo,
+          onGroupCreated: squadCardInfo,
         ),
       ),
     );
@@ -59,9 +59,9 @@ class _SquadPageState extends State<SquadPage> {
         child: JoinSquad(
           onPressed: () {
             Navigator.pop(context);
-            groupCardInfo();
+            squadCardInfo();
           },
-          onGroupCreated: groupCardInfo,
+          onGroupCreated: squadCardInfo,
         ),
       ),
     );
@@ -94,7 +94,7 @@ class _SquadPageState extends State<SquadPage> {
                 onTap: () => changeCurrentSquad(squad['id']!),
                 title: squad['squadName']!,
                 id: squad['id']!,
-                onLeaveGroup: groupCardInfo, // Pass the refresh callback
+                onLeaveGroup: squadCardInfo, // Pass the refresh callback
               );
             }).toList(),
           ),

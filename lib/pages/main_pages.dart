@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/squad_page.dart';
 import 'package:shopsquad/pages/main_pages/list_page.dart';
@@ -42,7 +44,8 @@ class _MainPagesState extends State<MainPages> {
     final squad = await groupService.currentSquad();
 
     setState(() {
-      currentSquad = squad ?? 'Gruppe';
+      Map<String, dynamic> responseData = json.decode(squad!.body);
+      currentSquad = responseData['squadName'] ?? 'Gruppe';
       updateTitle(currentIndex);
     });
   }

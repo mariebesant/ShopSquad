@@ -31,6 +31,33 @@ class SquadService {
     return response;
   }
 
+  Future<http.Response?> createList(String listname, String squadID) async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+
+    String url =
+        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups';
+    Map<String, dynamic> body = {
+      "orderGroupName": listname,
+      "squadId": squadID
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
   Future<bool> leaveGroup(String squadID) async {
     String? accessToken = await authService.getAccessToken();
 
@@ -108,7 +135,7 @@ class SquadService {
     return response;
   }
 
-  Future<String?> currentSquad() async {
+  Future<http.Response?> currentSquad() async {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
@@ -126,14 +153,14 @@ class SquadService {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = json.decode(response.body);
-      return responseData['squadName'];
+      return response;
     } else {
       // Handle den Fehler entsprechend
       return null;
     }
   }
 
-  Future<List<Map<String, String>>?> groupCardInfo() async {
+  Future<List<Map<String, String>>?> squadCardInfo() async {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
@@ -156,6 +183,39 @@ class SquadService {
           'id': item['id'].toString(),
           'squadName': item['squadName'].toString()
         };
+      }).toList();
+    } else {
+      // Handle the error
+      return null;
+    }
+  }
+
+  Future<List<String>?> listCardInfo() async {
+    String? accessToken = await authService.getAccessToken();
+
+    final squad = await currentSquad();
+    print(squad!.body);
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.post(
+        Uri.parse(
+            'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups/squad'),
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        },
+        body: squad.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      List<dynamic> responseList = json.decode(response.body);
+
+      return responseList.map((item) {
+        return item['orderGroupName'].toString();
       }).toList();
     } else {
       // Handle the error
