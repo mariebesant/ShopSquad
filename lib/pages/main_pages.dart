@@ -20,7 +20,6 @@ class _MainPagesState extends State<MainPages> {
   final PageController _controller = PageController();
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
-  bool isSelected = false;
   String currentSquad = '';
   String title = '';
 
@@ -32,32 +31,45 @@ class _MainPagesState extends State<MainPages> {
       IconData(0xf08a8, fontFamily: 'MaterialIcons');
   static const IconData listIcon =
       IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
-  static const IconData add = IconData(0xe047, fontFamily: 'MaterialIcons');
 
   @override
   void initState() {
-    loadCurrentSquad();
     super.initState();
+    loadCurrentSquad();
   }
 
   Future<void> loadCurrentSquad() async {
     final squad = await groupService.currentSquad();
-    print(squad);
+
     setState(() {
       currentSquad = squad ?? 'Gruppe';
+      updateTitle(currentIndex);
+    });
+  }
+
+  void updateTitle(int index) {
+    setState(() {
+      switch (_content[index]) {
+        case MainPagesSlides.group:
+          title = currentSquad;
+          break;
+        case MainPagesSlides.list:
+          title = currentSquad;
+          break;
+        case MainPagesSlides.profile:
+          title = 'Dein Profil';
+          break;
+      }
     });
   }
 
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
-        title = currentSquad;
         return const SquadPage();
       case MainPagesSlides.list:
-        title = currentSquad;
         return const ListPage();
       case MainPagesSlides.profile:
-        title = 'Dein Profil';
         return const ProfilePage();
       default:
         return const ListPage();
@@ -67,6 +79,7 @@ class _MainPagesState extends State<MainPages> {
   void onPressed(int index) {
     setState(() {
       currentIndex = index;
+      updateTitle(index);
       _controller.animateToPage(index,
           duration: const Duration(milliseconds: 500), curve: Curves.ease);
     });

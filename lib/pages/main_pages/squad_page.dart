@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/widgets/create_squad.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/squad_card.dart';
@@ -70,6 +71,12 @@ class _SquadPageState extends State<SquadPage> {
     final response = await groupService.changeCurrentSquad(id);
     if (response != null && response.statusCode == 200) {
       print('Successfully changed current squad');
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<dynamic>(
+          builder: (context) => MainPages(),
+        ),
+        (route) => false,
+      );
     } else {
       print('Failed to change current squad');
       print(response!.statusCode);
