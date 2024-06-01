@@ -1,46 +1,49 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/homepage.dart';
-import 'package:shopsquad/pages/main_pages.dart';
+import 'package:shopsquad/services/list_order_service.dart';
+import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
-import 'package:shopsquad/services/squad_service.dart';
 
-class JoinSquad extends StatefulWidget {
-  const JoinSquad(
-      {super.key,
-      required this.onPressed,
-      required this.onGroupCreated,
-      this.navigate});
+class CreateOrder extends StatefulWidget {
+  const CreateOrder({super.key, required this.onPressed, required this.onOrderCreated});
 
   final VoidCallback onPressed;
-  final VoidCallback onGroupCreated;
-  final String? navigate;
+  final VoidCallback onOrderCreated;
 
   @override
-  State<JoinSquad> createState() => _JoinSquadState();
+  State<CreateOrder> createState() => _CreateOrderState();
 }
 
-class _JoinSquadState extends State<JoinSquad> {
-  TextEditingController groupIDController = TextEditingController();
+class _CreateOrderState extends State<CreateOrder> {
+  TextEditingController orderController = TextEditingController();
+  TextEditingController orderQuantityController = TextEditingController();
+  final SquadService groupService = SquadService();
+  final ListOrderService listOrderService = ListOrderService();
+
   bool isLoading = false;
 
   static const IconData backIcon =
       IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
-  final SquadService groupService = SquadService();
-
-  Future<void> joinGroup(String id) async {
+  Future<void> newGroup(String groupname) async {
     setState(() {
       isLoading = true;
     });
 
-    final response = await groupService.joinSquad(id);
+    final currentSquad = await groupService.currentSquad();
+    Map<String, dynamic> responseData = json.decode(currentSquad!.body);
+    String squadID = responseData['id'];
+
+    final response = await listOrderService.createList(groupname, squadID);
 
     if (response != null && response.statusCode == 200) {
       print('Request successful');
       print('Response body: ${response.body}');
-      widget.onGroupCreated();
+      widget.onOrderCreated();
+      Navigator.of(context).pop();
     } else {
       print('Request failed with status: ${response?.statusCode}');
       showDialog(
@@ -86,20 +89,13 @@ class _JoinSquadState extends State<JoinSquad> {
           TextButton(
             onPressed: () {
               if (!isLoading) {
-                joinGroup(groupIDController.text);
-                widget.navigate == 'homepage'
-                    ? Navigator.of(context).push(
-                        MaterialPageRoute<dynamic>(
-                          builder: (context) => const MainPages(),
-                        ),
-                      )
-                    : null;
+                newGroup(orderController.text);
               }
             },
             child: isLoading
                 ? CircularProgressIndicator(color: AppColors.green)
                 : Text(
-                    'Beitreten',
+                    'Fertig',
                     style: TextStyle(
                         color: AppColors.green, fontSize: AppSizes.s1),
                   ),
@@ -108,17 +104,12 @@ class _JoinSquadState extends State<JoinSquad> {
       ),
       body: Container(
         decoration: BoxDecoration(color: AppColors.greenGray),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1),
-              child: MyTextField(
-                controller: groupIDController,
-                text: 'Gruppen ID',
-                isPassword: false,
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1),
+          child: MyTextField(
+              controller: orderQuantityController,
+              text: 'Menge',
+              isPassword: false),
         ),
       ),
     );

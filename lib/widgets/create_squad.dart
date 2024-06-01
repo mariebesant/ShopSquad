@@ -52,7 +52,7 @@ class _CreateSquadState extends State<CreateSquad> {
       isLoading = true;
     });
 
-    final response = await groupService.createGroup(groupname);
+    final response = await groupService.createSquad(groupname);
 
     if (response != null && response.statusCode == 200) {
       print('Request successful');

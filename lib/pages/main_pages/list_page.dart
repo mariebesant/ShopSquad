@@ -1,7 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shopsquad/pages/main_pages/to_do_page.dart';
+import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/widgets/create_list.dart';
@@ -17,21 +18,27 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  static const IconData moneyIcon =
-      IconData(0xf1dd, fontFamily: 'MaterialIcons');
+  static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
 
   List<String> listNames = [];
+  Response? squadListesponse;
   late String squadID;
   final SquadService groupService = SquadService();
+  final ListOrderService listOrderService = ListOrderService();
 
   Future<void> listCardInfo() async {
-    final squadList = await groupService.listCardInfo();
+    final response = await listOrderService.listCardInfo();
     final currentSquad = await groupService.currentSquad();
 
-    if (squadList != null) {
+    if (response != null && response.statusCode == 200) {
+      List<dynamic> responseList = json.decode(response.body);
       Map<String, dynamic> responseData = json.decode(currentSquad!.body);
+
       setState(() {
-        listNames = squadList;
+        squadListesponse = response;
+        listNames = responseList
+            .map((item) => item['orderGroupName'].toString())
+            .toList();
         squadID = responseData['id'];
       });
     } else {
@@ -70,19 +77,27 @@ class _ListPageState extends State<ListPage> {
               return ListCard(
                 subtitle:
                     const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
-                title: info, 
+                title: info,
                 trailing: Icon(
-                  moneyIcon,
+                  menu,
                   color: AppColors.white,
                 ),
                 backgroundColor: AppColors.accentGray,
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const ToDoPage(),
+                      builder: (context) => ToDoPage(
+                          body:
+                              squadListesponse!), // Hier wird squadListesponse übergeben
                     ),
                   );
-                }, // onTap Funktion hier definiert
+                },
+                onDelete: () {
+                  // Lösch-Logik hier
+                },
+                onReceipt: () {
+                  // Belege-Logik hier
+                },
               );
             }).toList(),
           ),

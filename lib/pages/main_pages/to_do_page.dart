@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shopsquad/pages/main_pages/squad_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
@@ -10,7 +11,9 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 enum MainPagesSlides { list, group, profile }
 
 class ToDoPage extends StatefulWidget {
-  const ToDoPage({super.key});
+  const ToDoPage({super.key, required this.body});
+
+  final Response body;
 
   @override
   State<ToDoPage> createState() => _ToDoPageState();
@@ -34,7 +37,7 @@ class _ToDoPageState extends State<ToDoPage> {
       case MainPagesSlides.group:
         return const SquadPage();
       case MainPagesSlides.list:
-        return const ToDo();
+        return ToDo(body: widget.body,);
       case MainPagesSlides.profile:
         return const ProfilePage();
     }

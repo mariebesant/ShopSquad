@@ -39,6 +39,7 @@ dependencies:
   device_info_plus: ^10.1.0
   localstorage: ^5.0.0
   share_plus: ^9.0.0
+  dropdown_search: ^5.0.6
 
 dev_dependencies:
   flutter_test:

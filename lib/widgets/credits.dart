@@ -27,6 +27,12 @@ class _CreditsState extends State<Credits> {
         shrinkWrap: true, // ListView passt sich der verfügbaren Höhe an
         children: creditInfo.map((info) {
           return ListCard(
+              onDelete: () {
+                
+              },
+              onReceipt: () {
+                
+              },
               title: info['title'],
               subtitle: Text(info['subtitle'], style: TextStyle(color: AppColors.lightGray),),
               backgroundColor: Colors.transparent,

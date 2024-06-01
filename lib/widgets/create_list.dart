@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -19,6 +20,7 @@ class CreateList extends StatefulWidget {
 class _CreateListState extends State<CreateList> {
   TextEditingController listnameController = TextEditingController();
   final SquadService groupService = SquadService();
+  final ListOrderService listOrderService = ListOrderService();
 
   bool isLoading = false;
 
@@ -34,12 +36,13 @@ class _CreateListState extends State<CreateList> {
     Map<String, dynamic> responseData = json.decode(currentSquad!.body);
     String squadID = responseData['id'];
 
-    final response = await groupService.createList(groupname, squadID);
+    final response = await listOrderService.createList(groupname, squadID);
 
     if (response != null && response.statusCode == 200) {
       print('Request successful');
       print('Response body: ${response.body}');
       widget.onListCreated();
+      Navigator.of(context).pop();
     } else {
       print('Request failed with status: ${response?.statusCode}');
       showDialog(

@@ -36,7 +36,7 @@ class SquadCardState extends State<SquadCard> {
       _isLoading = true;
     });
 
-    bool success = await groupService.leaveGroup(widget.id);
+    bool success = await groupService.leaveSquad(widget.id);
 
     setState(() {
       _isLoading = false;
