@@ -6,9 +6,11 @@ import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class CreateOrder extends StatefulWidget {
-  const CreateOrder({super.key, required this.onPressed, required this.onOrderCreated});
+  const CreateOrder(
+      {super.key, required this.onPressed, required this.onOrderCreated});
 
   final VoidCallback onPressed;
   final VoidCallback onOrderCreated;
@@ -24,47 +26,35 @@ class _CreateOrderState extends State<CreateOrder> {
   final ListOrderService listOrderService = ListOrderService();
 
   bool isLoading = false;
+  List<Map<String, dynamic>> products = [];
+  Map<String, dynamic>? selectedProduct;
 
   static const IconData backIcon =
       IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
-  Future<void> newGroup(String groupname) async {
+  @override
+  void initState() {
+    super.initState();
+    loadProducts();
+  }
+
+  Future<void> loadProducts() async {
+    final productList = await listOrderService.getProducts();
+    if (productList != null) {
+      setState(() {
+        products = productList;
+      });
+    } else {
+      print('Failed to load products');
+    }
+  }
+
+  Future<void> newOrder(String groupname) async {
     setState(() {
       isLoading = true;
     });
 
-    final currentSquad = await groupService.currentSquad();
-    Map<String, dynamic> responseData = json.decode(currentSquad!.body);
-    String squadID = responseData['id'];
-
-    final response = await listOrderService.createList(groupname, squadID);
-
-    if (response != null && response.statusCode == 200) {
-      print('Request successful');
-      print('Response body: ${response.body}');
-      widget.onOrderCreated();
-      Navigator.of(context).pop();
-    } else {
-      print('Request failed with status: ${response?.statusCode}');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Fehler'),
-            content: Text(
-                'Request failed with status: ${response?.statusCode}\nResponse: ${response?.body}'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+    print('Selected Product: $selectedProduct');
 
     setState(() {
       isLoading = false;
@@ -89,7 +79,7 @@ class _CreateOrderState extends State<CreateOrder> {
           TextButton(
             onPressed: () {
               if (!isLoading) {
-                newGroup(orderController.text);
+                newOrder(orderController.text);
               }
             },
             child: isLoading
@@ -106,10 +96,41 @@ class _CreateOrderState extends State<CreateOrder> {
         decoration: BoxDecoration(color: AppColors.greenGray),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1),
-          child: MyTextField(
-              controller: orderQuantityController,
-              text: 'Menge',
-              isPassword: false),
+          child: Column(
+            children: [
+              SizedBox(height: AppSizes.s1),
+              DropdownSearch<Map<String, dynamic>>(
+                items: products,
+                itemAsString: (Map<String, dynamic> p) => p['name'],
+                onChanged: (Map<String, dynamic>? data) {
+                  setState(() {
+                    selectedProduct = data;
+                  });
+                },
+                dropdownBuilder: (context, selectedItem) {
+                  return Text(
+                    selectedItem?['name'] ?? 'wähle ein Produkt',
+                    style: TextStyle(color: Colors.green),
+                  );
+                },
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: InputDecoration(
+                    labelText: "Produkte",
+                    hintText: "suche nach einem Produkt",
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.white)),
+                    labelStyle: TextStyle(color: AppColors.green),
+                  ),
+                ),
+              ),
+              SizedBox(height: AppSizes.s1),
+              MyTextField(
+                controller: orderQuantityController,
+                text: 'Menge',
+                isPassword: false,
+              ),
+            ],
+          ),
         ),
       ),
     );

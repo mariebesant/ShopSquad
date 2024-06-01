@@ -26,10 +26,10 @@ class MyTextField extends StatelessWidget {
           style: TextStyle(color: AppColors.white),
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightGray),
+              borderSide: BorderSide(color: AppColors.black),
             ),
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.lightGray),
+              borderSide: BorderSide(color: AppColors.black),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.green),

@@ -92,4 +92,20 @@ class ListOrderService {
       return null;
     }
   }
+
+  Future<List<Map<String, dynamic>>?> getProducts() async {
+    final response = await http.get(Uri.parse(
+      'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/products',
+    ));
+
+    if (response.statusCode == 200) {
+      List<dynamic> responseData = json.decode(response.body);
+      List<Map<String, dynamic>> products = List<Map<String, dynamic>>.from(
+          responseData.map((item) => item as Map<String, dynamic>));
+      return products;
+    } else {
+      // Handle den Fehler entsprechend
+      return null;
+    }
+  }
 }

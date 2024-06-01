@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
+import 'package:shopsquad/widgets/create_order.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
@@ -26,10 +27,10 @@ class _ToDoState extends State<ToDo> {
   @override
   void initState() {
     super.initState();
-    fetchListOrders();
+    orderCardInfo();
   }
 
-  Future<void> fetchListOrders() async {
+  Future<void> orderCardInfo() async {
     final response = await listOrderService.listOrders(widget.body);
     if (response != null && response.statusCode == 200) {
       List<dynamic> responseList = json.decode(response.body);
@@ -53,7 +54,19 @@ class _ToDoState extends State<ToDo> {
     }
   }
 
-  void addGrocery() {}
+  void addGrocery() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog.fullscreen(
+        child: CreateOrder(
+          onPressed: () {
+            Navigator.pop(context);
+            orderCardInfo();
+          },
+          onOrderCreated: orderCardInfo,
+        ),
+      ),
+    );}
 
   void completeShopping() {}
 
