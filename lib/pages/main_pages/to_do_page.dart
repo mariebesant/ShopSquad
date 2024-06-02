@@ -12,9 +12,10 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 enum MainPagesSlides { list, group, profile }
 
 class ToDoPage extends StatefulWidget {
-  const ToDoPage({super.key, required this.squadListResponse});
+  const ToDoPage({super.key, required this.squadListResponse, required this.title});
 
   final dynamic squadListResponse;
+  final String title;
 
   @override
   State<ToDoPage> createState() => _ToDoPageState();
@@ -60,7 +61,7 @@ class _ToDoPageState extends State<ToDoPage> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         title: Text(
-          'Gruppenname',
+          widget.title,
           style: TextStyle(color: AppColors.white),
         ),
       ),

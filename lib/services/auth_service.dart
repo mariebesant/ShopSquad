@@ -40,4 +40,31 @@ class AuthService {
       return null;
     }
   }
+
+  Future<String?> getUserNameByID() async {
+    String? accessToken = await getAccessToken();
+
+    if (accessToken == null) {
+      // ignore: avoid_print
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.get(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/users'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      dynamic responseBody = json.decode(response.body);
+      String? userId = responseBody['id'];
+      return userId;
+    } else {
+      // Handle the error
+      return null;
+    }
+  }
 }

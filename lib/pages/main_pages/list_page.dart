@@ -89,6 +89,7 @@ class _ListPageState extends State<ListPage> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => ToDoPage(
+                              title: title,
                               squadListResponse:
                                   item, // Das gesamte Element übergeben
                             ),

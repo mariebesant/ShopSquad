@@ -127,7 +127,7 @@ class SquadService {
       },
     );
 
-    if (response.statusCode == 200) { 
+    if (response.statusCode == 200) {
       return response;
     } else {
       // Handle den Fehler entsprechend
@@ -166,4 +166,28 @@ class SquadService {
     }
   }
 
+  Future<http.Response?> getCredits() async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      // ignore: avoid_print
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.get(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/debts/user'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      // Handle den Fehler entsprechend
+      return null;
+    }
+  }
 }
