@@ -40,7 +40,7 @@ class ListOrderService {
   Future<http.Response?> listCardInfo() async {
     String? accessToken = await authService.getAccessToken();
 
-    final squad = await squadService.currentSquad(); 
+    final squad = await squadService.currentSquad();
 
     if (accessToken == null) {
       // ignore: avoid_print
@@ -55,7 +55,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: squad!.body); 
+        body: squad!.body);
 
     if (response.statusCode == 200) {
       return response;
@@ -72,7 +72,7 @@ class ListOrderService {
       // ignore: avoid_print
       print('Access token not found');
       return null;
-    } 
+    }
 
     final response = await http.post(
         Uri.parse(
@@ -81,7 +81,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: orderResponse.body); 
+        body: orderResponse.body);
 
     if (response.statusCode == 200) {
       return response;
@@ -98,7 +98,7 @@ class ListOrderService {
       // ignore: avoid_print
       print('Access token not found');
       return null;
-    } 
+    }
 
     final response = await http.post(
         Uri.parse(
@@ -107,7 +107,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: body); 
+        body: body);
 
     if (response.statusCode == 200) {
       return response;
@@ -129,6 +129,41 @@ class ListOrderService {
       return products;
     } else {
       // Handle den Fehler entsprechend
+      return null;
+    }
+  }
+
+  Future<http.Response?> completeOrder(List<Map<String, dynamic>> body) async {
+    String? accessToken = await authService.getAccessToken();
+    String? userID = await authService.getUserID();
+    String jsonBody = json.encode(body);
+
+    if (accessToken == null) {
+      // ignore: avoid_print
+      print('Access token not found');
+      return null;
+    }
+    if (userID == null) {
+      // ignore: avoid_print
+      print('User ID not found');
+      return null;
+    }
+
+    final url =
+        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups/$userID/finish';
+
+    final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        },
+        body: jsonBody);
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      // Handle the error
       return null;
     }
   }

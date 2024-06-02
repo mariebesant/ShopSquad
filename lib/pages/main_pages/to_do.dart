@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
@@ -21,6 +23,8 @@ class ToDo extends StatefulWidget {
 
 class _ToDoState extends State<ToDo> {
   List<Map<String, dynamic>> listCardInfo = [];
+  List<Map<String, dynamic>> body = [];
+  bool _isLoading = true;
   final SquadService squadService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
   String? orderGroupID;
@@ -36,7 +40,6 @@ class _ToDoState extends State<ToDo> {
     setState(() {
       isLoading = true;
     });
-
     final response =
         await listOrderService.listOrders(widget.squadListResponse);
 
@@ -47,11 +50,9 @@ class _ToDoState extends State<ToDo> {
     if (response != null && response.statusCode == 200) {
       List<dynamic> responseList = json.decode(response.body);
       setState(() {
-        listCardInfo = responseList.map((item) {
+        listCardInfo = responseList.map<Map<String, dynamic>>((item) {
           return {
-            'subtitle': item['product']['price'],
-            'title': item['product']['name'],
-            'trailing': item['quantity'],
+            ...item,
             'isChecked': false, // Initial value for isChecked
           };
         }).toList();
@@ -59,9 +60,6 @@ class _ToDoState extends State<ToDo> {
     } else {
       // ignore: avoid_print
       print('Failed to fetch orders');
-      setState(() {
-        isLoading = false;
-      });
     }
     setState(() {
       isLoading = false;
@@ -84,12 +82,29 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  void completeShopping() {}
+  Future<void> completeShopping() async {
+    final response = await listOrderService.completeOrder(body);
+
+    if (response != null && response.statusCode == 200) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<dynamic>(
+          builder: (context) => const MainPages(),
+        ),
+        (route) => false,
+      );
+    } else {
+      // ignore: avoid_print
+      print('Failed to complete orders');
+    }
+  }
 
   void _updateCheckedStatus(int index, bool? isChecked) {
     setState(() {
       listCardInfo[index]['isChecked'] = isChecked;
       listCardInfo.sort((a, b) => a['isChecked'] == true ? 1 : -1);
+
+      // Update the body list
+      body = listCardInfo.where((item) => item['isChecked'] == true).toList();
     });
   }
 
@@ -118,9 +133,9 @@ class _ToDoState extends State<ToDo> {
                     final info = listCardInfo[index];
                     return ToDoCard(
                       isSortByPerson: false,
-                      subtitle: info['subtitle'],
-                      title: info['title'],
-                      trailing: info['trailing'],
+                      subtitle: info['product']['price'],
+                      title: info['product']['name'],
+                      trailing: info['quantity'],
                       isChecked: info['isChecked'],
                       onChanged: (bool? value) {
                         _updateCheckedStatus(index, value);
