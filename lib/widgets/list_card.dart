@@ -5,20 +5,22 @@ import 'package:shopsquad/theme/sizes.dart';
 class ListCard extends StatefulWidget {
   const ListCard({
     super.key,
-    required this.title, 
+    required this.title,
+    this.subtitle,
     required this.backgroundColor,
-    required this.trailing,
+    this.trailing,
     this.onTap,
     required this.onDelete,
     required this.onReceipt,
   });
 
-  final String title; 
+  final String title;
   final Color backgroundColor;
-  final Widget trailing;
+  final Widget? trailing;
   final VoidCallback? onTap;
   final VoidCallback onDelete;
   final VoidCallback onReceipt;
+  final String? subtitle;
 
   @override
   ListCardState createState() => ListCardState();
@@ -27,7 +29,8 @@ class ListCard extends StatefulWidget {
 class ListCardState extends State<ListCard> {
   bool _isLoading = false;
 
-  static const IconData deleteIcon = IconData(0xf696, fontFamily: 'MaterialIcons');
+  static const IconData deleteIcon =
+      IconData(0xf696, fontFamily: 'MaterialIcons');
   static const IconData moneyIcon =
       IconData(0xf1dd, fontFamily: 'MaterialIcons');
   static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
@@ -52,6 +55,7 @@ class ListCardState extends State<ListCard> {
               ListTile(
                 leading: const Icon(moneyIcon),
                 title: const Text('Belege'),
+                subtitle: Text( widget.subtitle !=null ? widget.subtitle! : ''),
                 onTap: () {
                   Navigator.of(context).pop();
                   widget.onReceipt();
@@ -90,8 +94,8 @@ class ListCardState extends State<ListCard> {
             title: Text(
               widget.title,
               style: TextStyle(color: AppColors.white),
-            ), 
-            trailing: IconButton(
+            ),
+            trailing: widget.trailing ?? IconButton(
               icon: Icon(menu, color: AppColors.white),
               onPressed: () => showOptionsDialog(context),
             ),

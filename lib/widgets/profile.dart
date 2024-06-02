@@ -3,6 +3,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:shopsquad/pages/login_page.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/widgets/credits.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -51,7 +52,12 @@ class Profile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.s1_25, vertical: AppSizes.s0_75),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<dynamic>(
+                      builder: (context) => const Credits(),
+                    ),
+                  );},
             child: Row(
               children: [
                 Icon(

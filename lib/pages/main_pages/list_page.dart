@@ -84,10 +84,6 @@ class _ListPageState extends State<ListPage> {
                     final String title = item['orderGroupName'].toString();
                     return ListCard(
                       title: title,
-                      trailing: Icon(
-                        menu,
-                        color: AppColors.white,
-                      ),
                       backgroundColor: AppColors.accentGray,
                       onTap: () {
                         Navigator.of(context).push(
