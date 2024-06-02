@@ -47,6 +47,7 @@ class _CreateOrderState extends State<CreateOrder> {
         products = productList;
       });
     } else {
+      // ignore: avoid_print
       print('Failed to load products');
     }
   }
@@ -78,6 +79,7 @@ class _CreateOrderState extends State<CreateOrder> {
       widget.onOrderCreated();
       Navigator.of(context).pop();
     } else {
+      // ignore: avoid_print
       print('Failed to create order');
       // Handle the error
     }
@@ -124,7 +126,7 @@ class _CreateOrderState extends State<CreateOrder> {
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1),
           child: Column(
             children: [
-              SizedBox(height: AppSizes.s1),
+              const SizedBox(height: AppSizes.s1),
               DropdownSearch<Map<String, dynamic>>(
                 items: products,
                 itemAsString: (Map<String, dynamic> p) => p['name'],
@@ -136,7 +138,7 @@ class _CreateOrderState extends State<CreateOrder> {
                 dropdownBuilder: (context, selectedItem) {
                   return Text(
                     selectedItem?['name'] ?? 'wähle ein Produkt',
-                    style: TextStyle(color: Colors.green),
+                    style: const TextStyle(color: Colors.green),
                   );
                 },
                 dropdownDecoratorProps: DropDownDecoratorProps(
@@ -149,7 +151,7 @@ class _CreateOrderState extends State<CreateOrder> {
                   ),
                 ),
               ),
-              SizedBox(height: AppSizes.s1),
+              const SizedBox(height: AppSizes.s1),
               MyTextField(
                 controller: orderQuantityController,
                 text: 'Menge',

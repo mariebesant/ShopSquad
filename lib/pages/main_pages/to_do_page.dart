@@ -13,7 +13,7 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 enum MainPagesSlides { list, group, profile }
 
 class ToDoPage extends StatefulWidget {
-  const ToDoPage({Key? key, required this.squadListResponse}) : super(key: key);
+  const ToDoPage({super.key, required this.squadListResponse});
 
   final dynamic squadListResponse;
 

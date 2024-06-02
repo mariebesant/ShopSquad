@@ -11,6 +11,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -35,6 +36,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return false;
     }
@@ -51,11 +53,10 @@ class SquadService {
     );
 
     if (response.statusCode == 200) {
-      print('Successfully left the group');
       return true;
     } else {
+      // ignore: avoid_print
       print('Failed to leave the group with status: ${response.statusCode}');
-      print('Response body: ${response.body}');
       return false;
     }
   }
@@ -64,6 +65,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -80,11 +82,10 @@ class SquadService {
     );
 
     if (response.statusCode == 200) {
-      print('Successfully join the group');
       return response;
     } else {
+      // ignore: avoid_print
       print('Failed to leave the group with status: ${response.statusCode}');
-      print('Response body: ${response.body}');
       return null;
     }
   }
@@ -93,6 +94,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -112,6 +114,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -124,8 +127,7 @@ class SquadService {
       },
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = json.decode(response.body);
+    if (response.statusCode == 200) { 
       return response;
     } else {
       // Handle den Fehler entsprechend
@@ -137,6 +139,7 @@ class SquadService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }

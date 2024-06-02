@@ -36,17 +36,15 @@ class _SignInState extends State<SignIn> {
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200) {
-        print('Erfolgreich angemeldet!');
-        print('Response Body: ${response.body}');
+      if (response.statusCode == 200) { 
         localStorage.setItem('accessBearer',  response.body);
 
         Navigator.of(context).push(MaterialPageRoute<dynamic>(
           builder: (context) => const Homepage(),
         ));
       } else {
-        print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
-        print('Response Body: ${response.body}');
+        // ignore: avoid_print
+        print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}'); 
       }
     }
 

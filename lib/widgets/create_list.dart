@@ -38,12 +38,11 @@ class _CreateListState extends State<CreateList> {
 
     final response = await listOrderService.createList(groupname, squadID);
 
-    if (response != null && response.statusCode == 200) {
-      print('Request successful');
-      print('Response body: ${response.body}');
+    if (response != null && response.statusCode == 200) { 
       widget.onListCreated();
       Navigator.of(context).pop();
     } else {
+      // ignore: avoid_print
       print('Request failed with status: ${response?.statusCode}');
       showDialog(
         context: context,

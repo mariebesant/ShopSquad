@@ -33,6 +33,7 @@ class _SquadPageState extends State<SquadPage> {
         squadNames = squadList;
       });
     } else {
+      // ignore: avoid_print
       print('Failed to fetch squad info');
     }
   }
@@ -69,8 +70,7 @@ class _SquadPageState extends State<SquadPage> {
 
   Future<void> changeCurrentSquad(String id) async {
     final response = await groupService.changeCurrentSquad(id);
-    if (response != null && response.statusCode == 200) {
-      print('Successfully changed current squad');
+    if (response != null && response.statusCode == 200) { 
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute<dynamic>(
           builder: (context) => const MainPages(),
@@ -78,8 +78,8 @@ class _SquadPageState extends State<SquadPage> {
         (route) => false,
       );
     } else {
-      print('Failed to change current squad');
-      print(response!.statusCode);
+      // ignore: avoid_print
+      print('Failed to change current squad'); 
     }
   }
 

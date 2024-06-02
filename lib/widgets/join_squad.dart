@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:shopsquad/pages/homepage.dart';
+import 'package:flutter/material.dart'; 
 import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -37,11 +36,10 @@ class _JoinSquadState extends State<JoinSquad> {
 
     final response = await groupService.joinSquad(id);
 
-    if (response != null && response.statusCode == 200) {
-      print('Request successful');
-      print('Response body: ${response.body}');
+    if (response != null && response.statusCode == 200) { 
       widget.onGroupCreated();
     } else {
+      // ignore: avoid_print
       print('Request failed with status: ${response?.statusCode}');
       showDialog(
         context: context,

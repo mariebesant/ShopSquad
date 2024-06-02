@@ -38,10 +38,9 @@ class _LoginState extends State<Login> {
 
     if (response.statusCode == 200) {
       responseToken = response.body;
-      print(responseToken);
 
+      // ignore: avoid_print
       print('Erfolgreich angemeldet!');
-      print('Response Body: ${response.body}');
 
       localStorage.setItem('accessBearer', responseToken);
 
@@ -49,8 +48,8 @@ class _LoginState extends State<Login> {
         builder: (context) => const MainPages(),
       ));
     } else {
+      // ignore: avoid_print
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
-      print('Response Body: ${response.body}');
     }
   }
 

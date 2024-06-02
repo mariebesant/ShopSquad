@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart'; 
 import 'package:http/http.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
@@ -10,7 +9,7 @@ import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
 class ToDo extends StatefulWidget {
-  const ToDo({Key? key, required this.squadListResponse});
+  const ToDo({super.key, required this.squadListResponse});
 
   final Response squadListResponse; // Änderung des Typs
 
@@ -54,6 +53,7 @@ class _ToDoState extends State<ToDo> {
         _isLoading = false;
       });
     } else {
+      // ignore: avoid_print
       print('Failed to fetch orders');
       setState(() {
         _isLoading = false;
@@ -82,13 +82,12 @@ class _ToDoState extends State<ToDo> {
   @override
   Widget build(BuildContext context) {
     return _isLoading
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : Column(
             children: [
               Expanded(
                 child: ListView(
-                  children: listCardInfo.map((info) {
-                    print(info);
+                  children: listCardInfo.map((info) { 
                     return ToDoCard(
                       isSortByPerson: false,
                       subtitle: info['subtitle'],

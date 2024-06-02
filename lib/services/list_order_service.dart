@@ -13,6 +13,7 @@ class ListOrderService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -39,10 +40,10 @@ class ListOrderService {
   Future<http.Response?> listCardInfo() async {
     String? accessToken = await authService.getAccessToken();
 
-    final squad = await squadService.currentSquad();
-    print(squad!.body);
+    final squad = await squadService.currentSquad(); 
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
     }
@@ -54,8 +55,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: squad.body);
-    print(response.statusCode);
+        body: squad!.body); 
 
     if (response.statusCode == 200) {
       return response;
@@ -69,10 +69,10 @@ class ListOrderService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
-    }
-    print(orderResponse.body);
+    } 
 
     final response = await http.post(
         Uri.parse(
@@ -81,9 +81,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: orderResponse.body);
-    print('Erfolg ${response.statusCode}');
-    print(response.body);
+        body: orderResponse.body); 
 
     if (response.statusCode == 200) {
       return response;
@@ -97,10 +95,10 @@ class ListOrderService {
     String? accessToken = await authService.getAccessToken();
 
     if (accessToken == null) {
+      // ignore: avoid_print
       print('Access token not found');
       return null;
-    }
-    print(body);
+    } 
 
     final response = await http.post(
         Uri.parse(
@@ -109,8 +107,7 @@ class ListOrderService {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
-        body: body);
-    print(response.statusCode);
+        body: body); 
 
     if (response.statusCode == 200) {
       return response;

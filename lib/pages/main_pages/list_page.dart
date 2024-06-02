@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:flutter/material.dart'; 
 import 'package:shopsquad/pages/main_pages/to_do_page.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
@@ -11,7 +10,7 @@ import 'package:shopsquad/widgets/list_card.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({Key? key});
+  const ListPage({super.key});
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -38,6 +37,7 @@ class _ListPageState extends State<ListPage> {
         squadID = responseData['id'];
       });
     } else {
+      // ignore: avoid_print
       print('Failed to fetch list info');
     }
   }

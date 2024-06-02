@@ -9,14 +9,13 @@ class ToDoCard extends StatelessWidget {
       required this.isSortByPerson,
       required this.title,
       required this.subtitle,
-      required this.trailing,
-      this.isChecked});
+      required this.trailing,});
 
   final bool isSortByPerson;
   final String title;
   final int subtitle;
   final int trailing;
-  bool? isChecked;
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
