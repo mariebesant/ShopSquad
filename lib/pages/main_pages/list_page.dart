@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages/to_do_page.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/widgets/create_list.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
-import 'package:shopsquad/widgets/list_card.dart';
-import 'package:shopsquad/widgets/progress_indicator.dart';
+import 'package:shopsquad/widgets/list_card.dart'; 
 
 class ListPage extends StatefulWidget {
   const ListPage({super.key});
@@ -24,7 +23,13 @@ class _ListPageState extends State<ListPage> {
   final SquadService groupService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
 
+  bool isLoading = false;
+
   Future<void> listCardInfo() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final response = await listOrderService.listCardInfo();
     final currentSquad = await groupService.currentSquad();
 
@@ -40,6 +45,10 @@ class _ListPageState extends State<ListPage> {
       // ignore: avoid_print
       print('Failed to fetch list info');
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void addList() {
@@ -65,40 +74,43 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            children: listItems.map((item) {
-              final String title = item['orderGroupName'].toString();
-              return ListCard( 
-                title: title,
-                trailing: Icon(
-                  menu,
-                  color: AppColors.white,
-                ),
-                backgroundColor: AppColors.accentGray,
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ToDoPage(
-                        squadListResponse: item, // Das gesamte Element übergeben
+    return isLoading
+        ? CircularProgressIndicator(color: AppColors.green)
+        : Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: listItems.map((item) {
+                    final String title = item['orderGroupName'].toString();
+                    return ListCard(
+                      title: title,
+                      trailing: Icon(
+                        menu,
+                        color: AppColors.white,
                       ),
-                    ),
-                  );
-                },
-                onDelete: () {
-                  // Lösch-Logik hier
-                },
-                onReceipt: () {
-                  // Belege-Logik hier
-                },
-              );
-            }).toList(),
-          ),
-        ),
-        FooterButtons(onPressedAdd: addList)
-      ],
-    );
+                      backgroundColor: AppColors.accentGray,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ToDoPage(
+                              squadListResponse:
+                                  item, // Das gesamte Element übergeben
+                            ),
+                          ),
+                        );
+                      },
+                      onDelete: () {
+                        // Lösch-Logik hier
+                      },
+                      onReceipt: () {
+                        // Belege-Logik hier
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+              FooterButtons(onPressedAdd: addList)
+            ],
+          );
   }
 }

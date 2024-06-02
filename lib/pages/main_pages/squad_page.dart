@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopsquad/pages/main_pages.dart';
+import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/widgets/create_squad.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/squad_card.dart';
@@ -18,6 +19,7 @@ class SquadPage extends StatefulWidget {
 class _SquadPageState extends State<SquadPage> {
   List<Map<String, String>> squadNames = [];
   final SquadService groupService = SquadService();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -26,6 +28,10 @@ class _SquadPageState extends State<SquadPage> {
   }
 
   Future<void> squadCardInfo() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final squadList = await groupService.squadCardInfo();
 
     if (squadList != null) {
@@ -36,6 +42,10 @@ class _SquadPageState extends State<SquadPage> {
       // ignore: avoid_print
       print('Failed to fetch squad info');
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void addGroup() {
@@ -70,7 +80,7 @@ class _SquadPageState extends State<SquadPage> {
 
   Future<void> changeCurrentSquad(String id) async {
     final response = await groupService.changeCurrentSquad(id);
-    if (response != null && response.statusCode == 200) { 
+    if (response != null && response.statusCode == 200) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute<dynamic>(
           builder: (context) => const MainPages(),
@@ -79,32 +89,34 @@ class _SquadPageState extends State<SquadPage> {
       );
     } else {
       // ignore: avoid_print
-      print('Failed to change current squad'); 
+      print('Failed to change current squad');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView(
-            children: squadNames.map((squad) {
-              return SquadCard(
-                onTap: () => changeCurrentSquad(squad['id']!),
-                title: squad['squadName']!,
-                id: squad['id']!,
-                onLeaveGroup: squadCardInfo, // Pass the refresh callback
-              );
-            }).toList(),
-          ),
-        ),
-        FooterButtons(
-          onPressedAdd: addGroup,
-          buttonText: 'BEITRETEN',
-          seconButtonPressed: joinGroup,
-        )
-      ],
-    );
+    return isLoading
+        ? CircularProgressIndicator(color: AppColors.green)
+        : Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: squadNames.map((squad) {
+                    return SquadCard(
+                      onTap: () => changeCurrentSquad(squad['id']!),
+                      title: squad['squadName']!,
+                      id: squad['id']!,
+                      onLeaveGroup: squadCardInfo, // Pass the refresh callback
+                    );
+                  }).toList(),
+                ),
+              ),
+              FooterButtons(
+                onPressedAdd: addGroup,
+                buttonText: 'BEITRETEN',
+                seconButtonPressed: joinGroup,
+              )
+            ],
+          );
   }
 }

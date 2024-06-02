@@ -34,7 +34,6 @@ class _CreditsState extends State<Credits> {
                 
               },
               title: info['title'],
-              subtitle: Text(info['subtitle'], style: TextStyle(color: AppColors.lightGray),),
               backgroundColor: Colors.transparent,
               trailing: Text(info['trailing'].toString(), style: TextStyle(color: AppColors.lightGray))); // 'trailing' wird hier als Widget übergeben
         }).toList(),

@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopsquad/pages/main_pages/squad_page.dart';
-import 'package:shopsquad/pages/main_pages/profile_page.dart';
-import 'package:shopsquad/widgets/progress_indicator.dart';
+import 'package:shopsquad/pages/main_pages/profile_page.dart'; 
 import 'package:shopsquad/pages/main_pages/to_do.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -26,9 +25,12 @@ class _ToDoPageState extends State<ToDoPage> {
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
 
-  static const IconData profileIcon = IconData(0xee35, fontFamily: 'MaterialIcons');
-  static const IconData groupsIcon = IconData(0xf08a8, fontFamily: 'MaterialIcons');
-  static const IconData listIcon = IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
+  static const IconData profileIcon =
+      IconData(0xee35, fontFamily: 'MaterialIcons');
+  static const IconData groupsIcon =
+      IconData(0xf08a8, fontFamily: 'MaterialIcons');
+  static const IconData listIcon =
+      IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
@@ -36,7 +38,8 @@ class _ToDoPageState extends State<ToDoPage> {
         return const SquadPage();
       case MainPagesSlides.list:
         return ToDo(
-          squadListResponse: http.Response(jsonEncode(widget.squadListResponse), 200),
+          squadListResponse:
+              http.Response(jsonEncode(widget.squadListResponse), 200),
         );
       case MainPagesSlides.profile:
         return const ProfilePage();

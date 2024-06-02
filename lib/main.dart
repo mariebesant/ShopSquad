@@ -9,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initLocalStorage();
 
+  // ignore: avoid_print
   print(localStorage.getItem('accessBearer'));
 
   runApp(const MyApp());

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
+import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/create_order.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
@@ -20,10 +21,10 @@ class ToDo extends StatefulWidget {
 
 class _ToDoState extends State<ToDo> {
   List<Map<String, dynamic>> listCardInfo = [];
-  bool _isLoading = true;
   final SquadService squadService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
   String? orderGroupID;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -32,6 +33,10 @@ class _ToDoState extends State<ToDo> {
   }
 
   Future<void> orderCardInfo() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final response =
         await listOrderService.listOrders(widget.squadListResponse);
 
@@ -50,15 +55,17 @@ class _ToDoState extends State<ToDo> {
             'isChecked': false, // Initial value for isChecked
           };
         }).toList();
-        _isLoading = false;
       });
     } else {
       // ignore: avoid_print
       print('Failed to fetch orders');
       setState(() {
-        _isLoading = false;
+        isLoading = false;
       });
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void addGrocery() {
@@ -89,14 +96,16 @@ class _ToDoState extends State<ToDo> {
   @override
   Widget build(BuildContext context) {
     int totalTasks = listCardInfo.length;
-    int completedTasks = listCardInfo.where((info) => info['isChecked'] == true).length;
+    int completedTasks =
+        listCardInfo.where((info) => info['isChecked'] == true).length;
 
-    return _isLoading
-        ? const Center(child: CircularProgressIndicator())
+    return isLoading
+        ? CircularProgressIndicator(color: AppColors.green)
         : Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+                padding: const EdgeInsets.symmetric(
+                    vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
                 child: MyProgressIndicator(
                   totalTasks: totalTasks,
                   completedTasks: completedTasks,
