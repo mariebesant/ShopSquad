@@ -10,9 +10,9 @@ import 'package:shopsquad/widgets/footer_buttons.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
 class ToDo extends StatefulWidget {
-  const ToDo({super.key, required this.body});
+  const ToDo({Key? key, required this.squadListResponse});
 
-  final Response body;
+  final Response squadListResponse; // Änderung des Typs
 
   @override
   State<ToDo> createState() => _ToDoState();
@@ -23,6 +23,7 @@ class _ToDoState extends State<ToDo> {
   bool _isLoading = true;
   final SquadService squadService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
+  String? orderGroupID;
 
   @override
   void initState() {
@@ -31,7 +32,13 @@ class _ToDoState extends State<ToDo> {
   }
 
   Future<void> orderCardInfo() async {
-    final response = await listOrderService.listOrders(widget.body);
+    final response =
+        await listOrderService.listOrders(widget.squadListResponse);
+
+    Map<String, dynamic> responseMap =
+        jsonDecode(widget.squadListResponse.body);
+    orderGroupID = responseMap['id'];
+
     if (response != null && response.statusCode == 200) {
       List<dynamic> responseList = json.decode(response.body);
       setState(() {
@@ -39,9 +46,9 @@ class _ToDoState extends State<ToDo> {
           return {
             'isSortByPerson': item['isSortByPerson'],
             'isChecked': item['isChecked'],
-            'subtitle': item['subtitle'],
-            'title': item['title'],
-            'trailing': item['trailing'],
+            'subtitle': item['product']['price'],
+            'title': item['product']['name'],
+            'trailing': item['quantity'],
           };
         }).toList();
         _isLoading = false;
@@ -59,6 +66,7 @@ class _ToDoState extends State<ToDo> {
       context: context,
       builder: (BuildContext context) => Dialog.fullscreen(
         child: CreateOrder(
+          orderGroupID: orderGroupID ?? '',
           onPressed: () {
             Navigator.pop(context);
             orderCardInfo();
@@ -66,7 +74,8 @@ class _ToDoState extends State<ToDo> {
           onOrderCreated: orderCardInfo,
         ),
       ),
-    );}
+    );
+  }
 
   void completeShopping() {}
 
@@ -79,9 +88,9 @@ class _ToDoState extends State<ToDo> {
               Expanded(
                 child: ListView(
                   children: listCardInfo.map((info) {
+                    print(info);
                     return ToDoCard(
-                      isSortByPerson: info['isSortByPerson'],
-                      isChecked: info['isChecked'],
+                      isSortByPerson: false,
                       subtitle: info['subtitle'],
                       title: info['title'],
                       trailing: info['trailing'],

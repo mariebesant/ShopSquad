@@ -4,19 +4,19 @@ import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/checkbox.dart';
 
 class ToDoCard extends StatelessWidget {
-  const ToDoCard(
+  ToDoCard(
       {super.key,
       required this.isSortByPerson,
       required this.title,
       required this.subtitle,
       required this.trailing,
-      required this.isChecked});
+      this.isChecked});
 
   final bool isSortByPerson;
   final String title;
-  final String subtitle;
-  final String trailing;
-  final bool isChecked;
+  final int subtitle;
+  final int trailing;
+  bool? isChecked;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class ToDoCard extends StatelessWidget {
                 color: isSortByPerson ? AppColors.green : AppColors.white),
           ),
           subtitle: Text(
-            subtitle,
+            '${subtitle.toString()}€' ,
             style: TextStyle(
                 color: AppColors.white,
                 fontSize: AppSizes.s0_75,

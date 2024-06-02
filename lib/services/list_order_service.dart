@@ -82,8 +82,35 @@ class ListOrderService {
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
         body: orderResponse.body);
-    print(response.statusCode);
+    print('Erfolg ${response.statusCode}');
     print(response.body);
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      // Handle the error
+      return null;
+    }
+  }
+
+  Future<http.Response?> createOrder(String body) async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+    print(body);
+
+    final response = await http.post(
+        Uri.parse(
+            'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orders'),
+        headers: {
+          'Content-Type': 'application/json',
+          HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        },
+        body: body);
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       return response;

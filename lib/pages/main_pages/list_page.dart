@@ -11,7 +11,7 @@ import 'package:shopsquad/widgets/list_card.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 
 class ListPage extends StatefulWidget {
-  const ListPage({super.key});
+  const ListPage({Key? key});
 
   @override
   State<ListPage> createState() => _ListPageState();
@@ -20,8 +20,7 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
 
-  List<String> listNames = [];
-  Response? squadListesponse;
+  List<dynamic> listItems = []; // Liste für die gesamte Antwort
   late String squadID;
   final SquadService groupService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
@@ -31,14 +30,11 @@ class _ListPageState extends State<ListPage> {
     final currentSquad = await groupService.currentSquad();
 
     if (response != null && response.statusCode == 200) {
-      List<dynamic> responseList = json.decode(response.body);
-      Map<String, dynamic> responseData = json.decode(currentSquad!.body);
+      final responseList = json.decode(response.body);
+      final responseData = json.decode(currentSquad!.body);
 
       setState(() {
-        squadListesponse = response;
-        listNames = responseList
-            .map((item) => item['orderGroupName'].toString())
-            .toList();
+        listItems = responseList; // Die gesamte Antwort speichern
         squadID = responseData['id'];
       });
     } else {
@@ -73,11 +69,11 @@ class _ListPageState extends State<ListPage> {
       children: [
         Expanded(
           child: ListView(
-            children: listNames.map((info) {
+            children: listItems.map((item) {
+              final String title = item['orderGroupName'].toString();
               return ListCard(
-                subtitle:
-                    const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
-                title: info,
+                subtitle: const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
+                title: title,
                 trailing: Icon(
                   menu,
                   color: AppColors.white,
@@ -87,8 +83,8 @@ class _ListPageState extends State<ListPage> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => ToDoPage(
-                          body:
-                              squadListesponse!), // Hier wird squadListesponse übergeben
+                        squadListResponse: item, // Das gesamte Element übergeben
+                      ),
                     ),
                   );
                 },

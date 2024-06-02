@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:shopsquad/pages/main_pages/squad_page.dart';
 import 'package:shopsquad/pages/main_pages/profile_page.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
@@ -11,9 +13,9 @@ import 'package:shopsquad/widgets/my_icon_button.dart';
 enum MainPagesSlides { list, group, profile }
 
 class ToDoPage extends StatefulWidget {
-  const ToDoPage({super.key, required this.body});
+  const ToDoPage({Key? key, required this.squadListResponse}) : super(key: key);
 
-  final Response body;
+  final dynamic squadListResponse;
 
   @override
   State<ToDoPage> createState() => _ToDoPageState();
@@ -23,21 +25,19 @@ class _ToDoPageState extends State<ToDoPage> {
   final PageController _controller = PageController();
   final List<MainPagesSlides> _content = MainPagesSlides.values;
   int currentIndex = 0;
-  bool isSelected = false;
 
-  static const IconData profileIcon =
-      IconData(0xee35, fontFamily: 'MaterialIcons');
-  static const IconData groupsIcon =
-      IconData(0xf08a8, fontFamily: 'MaterialIcons');
-  static const IconData listIcon =
-      IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
+  static const IconData profileIcon = IconData(0xee35, fontFamily: 'MaterialIcons');
+  static const IconData groupsIcon = IconData(0xf08a8, fontFamily: 'MaterialIcons');
+  static const IconData listIcon = IconData(0xf85e, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
   Widget getSlide(BuildContext context, int index) {
     switch (_content[index]) {
       case MainPagesSlides.group:
         return const SquadPage();
       case MainPagesSlides.list:
-        return ToDo(body: widget.body,);
+        return ToDo(
+          squadListResponse: http.Response(jsonEncode(widget.squadListResponse), 200),
+        );
       case MainPagesSlides.profile:
         return const ProfilePage();
     }
@@ -50,8 +50,6 @@ class _ToDoPageState extends State<ToDoPage> {
           duration: const Duration(milliseconds: 500), curve: Curves.ease);
     });
   }
-
-  void addGrocery() {}
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +65,7 @@ class _ToDoPageState extends State<ToDoPage> {
       body: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+            padding: EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
             child: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
           ),
           Expanded(
@@ -88,33 +85,37 @@ class _ToDoPageState extends State<ToDoPage> {
             ),
           ),
           Container(
-              height: AppSizes.s6,
-              decoration: BoxDecoration(
-                color: AppColors.accentGray,
+            height: AppSizes.s6,
+            decoration: BoxDecoration(
+              color: AppColors.accentGray,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1_5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MyIconButton(
+                    isSelected: currentIndex == 0,
+                    currentSlide: 'Liste',
+                    onPressed: () => onPressed(0),
+                    icon: listIcon,
+                  ),
+                  MyIconButton(
+                    isSelected: currentIndex == 1,
+                    currentSlide: 'Gruppe',
+                    onPressed: () => onPressed(1),
+                    icon: groupsIcon,
+                  ),
+                  MyIconButton(
+                    isSelected: currentIndex == 2,
+                    currentSlide: 'Profil',
+                    onPressed: () => onPressed(2),
+                    icon: profileIcon,
+                  ),
+                ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.s1_5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MyIconButton(
-                        isSelected: currentIndex == 0,
-                        currentSlide: 'Liste',
-                        onPressed: () => onPressed(0),
-                        icon: listIcon),
-                    MyIconButton(
-                        isSelected: currentIndex == 1,
-                        currentSlide: 'Gruppe',
-                        onPressed: () => onPressed(1),
-                        icon: groupsIcon),
-                    MyIconButton(
-                        isSelected: currentIndex == 2,
-                        currentSlide: 'Profil',
-                        onPressed: () => onPressed(2),
-                        icon: profileIcon)
-                  ],
-                ),
-              ))
+            ),
+          ),
         ],
       ),
     );
