@@ -64,10 +64,6 @@ class _ToDoPageState extends State<ToDoPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
-            child: MyProgressIndicator(totalTasks: 5, completedTasks: 3),
-          ),
           Expanded(
             child: PageView.builder(
               onPageChanged: (index) {

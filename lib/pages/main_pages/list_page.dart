@@ -71,8 +71,7 @@ class _ListPageState extends State<ListPage> {
           child: ListView(
             children: listItems.map((item) {
               final String title = item['orderGroupName'].toString();
-              return ListCard(
-                subtitle: const MyProgressIndicator(totalTasks: 5, completedTasks: 3),
+              return ListCard( 
                 title: title,
                 trailing: Icon(
                   menu,

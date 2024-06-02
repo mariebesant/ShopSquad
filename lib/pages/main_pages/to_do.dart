@@ -1,11 +1,12 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/squad_service.dart';
+import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/create_order.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
+import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
 class ToDo extends StatefulWidget {
@@ -43,11 +44,10 @@ class _ToDoState extends State<ToDo> {
       setState(() {
         listCardInfo = responseList.map((item) {
           return {
-            'isSortByPerson': item['isSortByPerson'],
-            'isChecked': item['isChecked'],
             'subtitle': item['product']['price'],
             'title': item['product']['name'],
             'trailing': item['quantity'],
+            'isChecked': false, // Initial value for isChecked
           };
         }).toList();
         _isLoading = false;
@@ -79,22 +79,45 @@ class _ToDoState extends State<ToDo> {
 
   void completeShopping() {}
 
+  void _updateCheckedStatus(int index, bool? isChecked) {
+    setState(() {
+      listCardInfo[index]['isChecked'] = isChecked;
+      listCardInfo.sort((a, b) => a['isChecked'] == true ? 1 : -1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    int totalTasks = listCardInfo.length;
+    int completedTasks = listCardInfo.where((info) => info['isChecked'] == true).length;
+
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+                child: MyProgressIndicator(
+                  totalTasks: totalTasks,
+                  completedTasks: completedTasks,
+                ),
+              ),
               Expanded(
-                child: ListView(
-                  children: listCardInfo.map((info) { 
+                child: ListView.builder(
+                  itemCount: listCardInfo.length,
+                  itemBuilder: (context, index) {
+                    final info = listCardInfo[index];
                     return ToDoCard(
                       isSortByPerson: false,
                       subtitle: info['subtitle'],
                       title: info['title'],
                       trailing: info['trailing'],
+                      isChecked: info['isChecked'],
+                      onChanged: (bool? value) {
+                        _updateCheckedStatus(index, value);
+                      },
                     );
-                  }).toList(),
+                  },
                 ),
               ),
               FooterButtons(

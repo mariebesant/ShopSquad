@@ -5,8 +5,7 @@ import 'package:shopsquad/theme/sizes.dart';
 class ListCard extends StatefulWidget {
   const ListCard({
     super.key,
-    required this.title,
-    required this.subtitle,
+    required this.title, 
     required this.backgroundColor,
     required this.trailing,
     this.onTap,
@@ -14,8 +13,7 @@ class ListCard extends StatefulWidget {
     required this.onReceipt,
   });
 
-  final String title;
-  final Widget subtitle;
+  final String title; 
   final Color backgroundColor;
   final Widget trailing;
   final VoidCallback? onTap;
@@ -92,8 +90,7 @@ class ListCardState extends State<ListCard> {
             title: Text(
               widget.title,
               style: TextStyle(color: AppColors.white),
-            ),
-            subtitle: widget.subtitle,
+            ), 
             trailing: IconButton(
               icon: Icon(menu, color: AppColors.white),
               onPressed: () => showOptionsDialog(context),
