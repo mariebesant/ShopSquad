@@ -136,9 +136,12 @@ class ListOrderService {
       List<dynamic> responseData = json.decode(response.body);
       List<Map<String, dynamic>> products =
           List<Map<String, dynamic>>.from(responseData.map((item) => {
-                'product': item['name'],
-                'unit': item['unitType'],
+                'name': item['name'],
+                'unitType': item['unitType'],
                 'id': item['id'],
+                'description': item['description'],
+                'price': item['price'],
+                'brand': item['brand'],
               }));
       return products;
     } else {

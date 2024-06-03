@@ -15,7 +15,7 @@ class Credits extends StatefulWidget {
 }
 
 class _CreditsState extends State<Credits> {
-  String credit = '-23,78';
+  double credit = 0.0;
   bool isLoading = false;
 
   final SquadService squadService = SquadService();
@@ -32,22 +32,32 @@ class _CreditsState extends State<Credits> {
 
     if (response != null && response.statusCode == 200) {
       List<dynamic> responseList = json.decode(response.body);
+      double calculatedCredit = 0.0;
+
+      List<Map<String, dynamic>> filteredCredits = responseList.where((item) {
+        final bool isCreditor = item['creditorId'] == userID;
+        final bool isDebitor = item['debitorId'] == userID;
+        return isCreditor != isDebitor; // Either creditor or debitor but not both
+      }).map<Map<String, dynamic>>((item) {
+        bool isCreditor = item['creditorId'] == userID;
+        double amount = item['amount'];
+        if (isCreditor) {
+          calculatedCredit += amount;
+        } else {
+          calculatedCredit -= amount;
+        }
+        return {
+          'userName': 'Neu',
+          'amount': amount,
+          'isCreditor': isCreditor,
+          "creditorName": item['creditorName'],
+          "debitorName": item['debitorName'],
+        };
+      }).toList();
+
       setState(() {
-        creditInfo = responseList.where((item) {
-          print('Creditor ID ${item['creditorId']}');
-          print('Debitor ID${item['debitorId']}');
-          print('userID $userID');
-          final bool isCreditor = item['creditorId'] == userID;
-          final bool isDebitor = item['debitorId'] == userID;
-          return isCreditor !=
-              isDebitor; // Either creditor or debitor but not both
-        }).map<Map<String, dynamic>>((item) {
-          return {
-            'userName': 'Neu',
-            'amount': item['amount'],
-            'isCreditor': item['creditorId'] == userID,
-          };
-        }).toList();
+        creditInfo = filteredCredits;
+        credit = calculatedCredit;
       });
     } else {
       print('Failed to get all Depts');
@@ -75,14 +85,14 @@ class _CreditsState extends State<Credits> {
       ),
       backgroundColor: AppColors.background,
       body: isLoading
-          ? CircularProgressIndicator(color: AppColors.green)
+          ? Center(child: CircularProgressIndicator(color: AppColors.green))
           : Column(
               children: [
                 const SizedBox(height: AppSizes.s1),
                 Text(
-                  credit,
+                  credit.toStringAsFixed(2),
                   style: TextStyle(
-                    color: AppColors.warning,
+                    color: credit >= 0 ? AppColors.success : AppColors.warning,
                     fontSize: AppSizes.s2,
                     fontWeight: FontWeight.w300,
                   ),
@@ -105,15 +115,17 @@ class _CreditsState extends State<Credits> {
                         isActive: false,
                         onDelete: () {},
                         onReceipt: () {},
-                        subtitle: info['subtitle'],
-                        title: info['userName'],
+                        subtitle: info['userName'],
+                        title: info['isCreditor']
+                            ? info['debitorName']
+                            : info['creditorName'],
                         backgroundColor: Colors.transparent,
                         trailing: Text(
                           info['amount'].toString(),
                           style: TextStyle(
                             color: info['isCreditor']
-                                ? AppColors.warning
-                                : AppColors.success,
+                                ? AppColors.success
+                                : AppColors.warning,
                           ),
                         ),
                       );

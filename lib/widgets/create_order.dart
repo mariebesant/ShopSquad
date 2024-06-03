@@ -97,12 +97,14 @@ class _CreateOrderState extends State<CreateOrder> {
       _showAlert('Bitte geben Sie eine gültige Menge ein.');
       return;
     }
+    print(selectedProduct);
 
     final body = json.encode({
       "orderGroupId": widget.orderGroupID,
       "product": selectedProduct,
       "quantity": quantity
     });
+    print(body);
 
     final response = await listOrderService.createOrder(body);
 
@@ -158,17 +160,17 @@ class _CreateOrderState extends State<CreateOrder> {
               const SizedBox(height: AppSizes.s1),
               DropdownSearch<Map<String, dynamic>>(
                 items: products,
-                itemAsString: (Map<String, dynamic> p) => p['product'],
+                itemAsString: (Map<String, dynamic> p) => p['name'],
                 onChanged: (Map<String, dynamic>? data) {
                   setState(() {
                     selectedProduct = data;
-                    print("Ausgewahlt ${data?['unit']}");
-                    orderUnitController.text = data?['unit'] ?? '1';
+                    print("Ausgewahlt ${data?['unitType']}");
+                    orderUnitController.text = data?['unitType'] ?? '1';
                   });
                 },
                 dropdownBuilder: (context, selectedItem) {
                   return Text(
-                    selectedItem?['product'] ?? 'wähle ein Produkt',
+                    selectedItem?['name'] ?? 'wähle ein Produkt',
                     style: const TextStyle(color: Colors.green),
                   );
                 },
