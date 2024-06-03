@@ -124,10 +124,10 @@ class _CreateOrderState extends State<CreateOrder> {
   void updateBarcode(String barcode) {
     setState(() {
       scannedBarcode = barcode;
-      // Optionally, find the product by barcode and set it as selectedProduct
       selectedProduct = products.firstWhere(
-          (product) => product['barcode'] == barcode,
-          orElse: () => {});
+        (product) => product['barcode'] == barcode,
+        orElse: () => {},
+      );
       orderUnitController.text = selectedProduct?['unitType'] ?? '';
     });
   }
@@ -172,6 +172,9 @@ class _CreateOrderState extends State<CreateOrder> {
               const SizedBox(height: AppSizes.s1),
               Row(
                 children: [
+                  selectedProduct != null ?
+                    Text(selectedProduct!['name'], style: TextStyle(color: AppColors.white, fontSize: AppSizes.s2, fontWeight: FontWeight.w400),):
+                  
                   Expanded(
                     child: DropdownSearch<Map<String, dynamic>>(
                       items: products,
@@ -179,8 +182,8 @@ class _CreateOrderState extends State<CreateOrder> {
                       onChanged: (Map<String, dynamic>? data) {
                         setState(() {
                           selectedProduct = data;
-                          print("Ausgewählt ${data?['unitType']}");
-                          orderUnitController.text = data?['unitType'] ?? '1';
+                          orderUnitController.text =
+                              selectedProduct?['unitType'] ?? '1';
                         });
                       },
                       dropdownBuilder: (context, selectedItem) {

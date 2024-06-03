@@ -142,6 +142,7 @@ class ListOrderService {
                 'description': item['description'],
                 'price': item['price'],
                 'brand': item['brand'],
+                'barcode': item['barcode'],
               }));
       return products;
     } else {
