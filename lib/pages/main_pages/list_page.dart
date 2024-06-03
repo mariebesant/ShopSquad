@@ -84,6 +84,7 @@ Widget build(BuildContext context) {
                 children: listItems.map((item) {
                   final String title = item['orderGroupName'].toString();
                   return ListCard(
+                    imageUrl: item['image'],
                     isActive: !item['isFinished'],
                     title: title,
                     backgroundColor: AppColors.accentGray,

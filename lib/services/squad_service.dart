@@ -190,4 +190,18 @@ class SquadService {
       return null;
     }
   }
+
+  Future<String> getImageLink() async {
+    final response = await http.get(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/examples/imageLink'),
+    );
+
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      // Handle den Fehler entsprechend
+      return '';
+    }
+  }
 }
