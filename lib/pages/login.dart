@@ -19,8 +19,13 @@ class _LoginState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late String responseToken;
+  bool isLoading = false;
 
   Future onPressed() async {
+    setState(() {
+      isLoading = true;
+    });
+
     String username = usernameController.text;
     String password = passwordController.text;
 
@@ -51,6 +56,9 @@ class _LoginState extends State<Login> {
       // ignore: avoid_print
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
     }
+      setState(() {
+        isLoading = false;
+      });
   }
 
   @override
@@ -58,7 +66,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        actions: [
+        actions: [ isLoading? CircularProgressIndicator(color: AppColors.green):
           TextButton(
             onPressed: onPressed,
             child: Text(

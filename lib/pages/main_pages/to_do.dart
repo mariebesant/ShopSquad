@@ -9,6 +9,7 @@ import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/create_order.dart';
 import 'package:shopsquad/widgets/footer_buttons.dart';
+import 'package:shopsquad/widgets/image_bill.dart';
 import 'package:shopsquad/widgets/progress_indicator.dart';
 import 'package:shopsquad/widgets/to_do_card.dart';
 
@@ -82,18 +83,15 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  Future<void> completeShopping() async {
-    final response = await listOrderService.completeOrder(body);
+  Future<void> completeShopping(String base64Image) async {
+    final response = await listOrderService.completeOrder(body, base64Image);
 
     if (response != null && response.statusCode == 200) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<dynamic>(
-          builder: (context) => const MainPages(),
-        ),
+        MaterialPageRoute(builder: (context) => const MainPages()),
         (route) => false,
       );
     } else {
-      // ignore: avoid_print
       print('Failed to complete orders');
     }
   }
@@ -103,9 +101,21 @@ class _ToDoState extends State<ToDo> {
       listCardInfo[index]['isChecked'] = isChecked;
       listCardInfo.sort((a, b) => a['isChecked'] == true ? 1 : -1);
 
-      // Update the body list
       body = listCardInfo.where((item) => item['isChecked'] == true).toList();
     });
+  }
+
+  void openImageBillAndCompleteShopping() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageBill(
+          onImageConverted: (base64Image) {
+            completeShopping(base64Image);
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -151,7 +161,7 @@ class _ToDoState extends State<ToDo> {
               FooterButtons(
                 onPressedAdd: addGrocery,
                 buttonText: 'EINKAUFEN',
-                seconButtonPressed: completeShopping,
+                seconButtonPressed: openImageBillAndCompleteShopping,
               )
             ],
           );

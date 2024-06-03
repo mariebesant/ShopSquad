@@ -151,10 +151,13 @@ class ListOrderService {
     }
   }
 
-  Future<http.Response?> completeOrder(List<Map<String, dynamic>> body) async {
+  Future<http.Response?> completeOrder(List<Map<String, dynamic>> body, String image) async {
+    print('Check');
+    print(body);
+
     String? accessToken = await authService.getAccessToken();
     String? userID = await authService.getUserID();
-    String jsonBody = json.encode(body);
+    String jsonBody = json.encode(({"orders": body, "imageString": image}));
 
     if (accessToken == null) {
       // ignore: avoid_print
@@ -176,6 +179,8 @@ class ListOrderService {
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
         body: jsonBody);
+    print('chekc');
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       return response;
@@ -183,5 +188,6 @@ class ListOrderService {
       // Handle the error
       return null;
     }
+    
   }
 }

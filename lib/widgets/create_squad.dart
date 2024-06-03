@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -55,7 +57,10 @@ class _CreateSquadState extends State<CreateSquad> {
     final response = await groupService.createSquad(groupname);
 
     if (response != null && response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      await groupService.changeCurrentSquad(responseData["id"]);
       widget.onGroupCreated();
+      Navigator.of(context).pop();
     } else {
       // ignore: avoid_print
       print('Request failed with status: ${response?.statusCode}');

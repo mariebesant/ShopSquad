@@ -21,6 +21,7 @@ class _SignInState extends State<SignIn> {
 
   bool isPaypal = false;
   String paypalName = "";
+  bool isLoading = false;
 
   void _onPaymentChange(bool isPaypalSelected, String newPaypalName) {
     setState(() {
@@ -30,6 +31,9 @@ class _SignInState extends State<SignIn> {
   }
 
   Future<void> onPressed() async {
+    setState(() {
+      isLoading = true;
+    });
     String username = usernameController.text;
     String password = passwordController.text;
 
@@ -48,7 +52,7 @@ class _SignInState extends State<SignIn> {
     );
 
     if (response.statusCode == 200) {
-        localStorage.setItem('accessBearer',  response.body);
+      localStorage.setItem('accessBearer', response.body);
 
       Navigator.of(context).push(MaterialPageRoute<dynamic>(
         builder: (context) => const Homepage(),
@@ -56,6 +60,9 @@ class _SignInState extends State<SignIn> {
     } else {
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -64,17 +71,20 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: AppColors.background,
         actions: [
-          TextButton(
-            onPressed: onPressed,
-            child: Text(
-              'Fertig',
-              style: TextStyle(color: AppColors.white, fontSize: AppSizes.s1),
-            ),
-          ),
+          isLoading
+              ? CircularProgressIndicator(color: AppColors.green)
+              : TextButton(
+                  onPressed: onPressed,
+                  child: Text(
+                    'Fertig',
+                    style: TextStyle(
+                        color: AppColors.white, fontSize: AppSizes.s1),
+                  ),
+                ),
         ],
       ),
       backgroundColor: AppColors.background,
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.s1),
           child: Column(

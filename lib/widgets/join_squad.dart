@@ -37,6 +37,11 @@ class _JoinSquadState extends State<JoinSquad> {
     final response = await groupService.joinSquad(id);
 
     if (response != null && response.statusCode == 200) { 
+      await groupService.changeCurrentSquad(id);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const MainPages()),
+        (route) => false,
+      );
       widget.onGroupCreated();
     } else {
       // ignore: avoid_print

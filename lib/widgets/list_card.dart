@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
@@ -69,6 +70,40 @@ class ListCardState extends State<ListCard> {
     );
   }
 
+  void showImage(String base64Image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Image.memory(
+                  base64Decode(base64Image),
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Positioned(
+                top: 40.0,
+                right: 20.0,
+                child: IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -94,7 +129,11 @@ class ListCardState extends State<ListCard> {
                 (widget.isActive
                     ? null
                     : IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Hier den Base64-Bild-String übergeben
+                          String image = "YOUR_BASE64_IMAGE_STRING_HERE";
+                          showImage(image);
+                        },
                         icon: Icon(
                           moneyIcon,
                           color: AppColors.white,
