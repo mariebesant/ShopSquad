@@ -58,14 +58,16 @@ class ListOrderService {
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = jsonDecode(response.body);
-      List<dynamic> filteredResponse = jsonResponse
-          .where((orderGroup) => orderGroup['isFinished'] == false)
-          .toList();
+      // List<dynamic> jsonResponse = jsonDecode(response.body);
+      // List<dynamic> filteredResponse = jsonResponse
+      //     .where((orderGroup) => orderGroup['isFinished'] == false)
+      //     .toList();
 
-      // Create a new Response with the filtered body
-      return http.Response(jsonEncode(filteredResponse), 200,
-          headers: response.headers);
+      // // Create a new Response with the filtered body
+      // return http.Response(jsonEncode(filteredResponse), 200,
+      //     headers: response.headers);
+
+      return response;
     } else {
       // Handle the error
       return null;

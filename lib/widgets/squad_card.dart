@@ -28,7 +28,7 @@ class SquadCardState extends State<SquadCard> {
 
   static const IconData deleteIcon =
       IconData(0xf696, fontFamily: 'MaterialIcons');
-  static const IconData shareIcon = Icons.share;
+  static const IconData shareIcon = IconData(0xf826, fontFamily: 'MaterialIcons');
   static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
 
   Future<void> leaveGroup(BuildContext context) async {

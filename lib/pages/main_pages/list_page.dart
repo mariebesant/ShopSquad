@@ -71,41 +71,44 @@ class _ListPageState extends State<ListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return isLoading
-        ? CircularProgressIndicator(color: AppColors.green)
-        : Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  children: listItems.map((item) {
-                    final String title = item['orderGroupName'].toString();
-                    return ListCard(
-                      title: title,
-                      backgroundColor: AppColors.accentGray,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ToDoPage(
-                              title: title,
-                              squadListResponse:
-                                  item, // Das gesamte Element übergeben
-                            ),
+Widget build(BuildContext context) {
+  // Sorting the list by 'isFinished' status
+  listItems.sort((a, b) => (a['isFinished'] ? 1 : 0) - (b['isFinished'] ? 1 : 0));
+
+  return isLoading
+      ? CircularProgressIndicator(color: AppColors.green)
+      : Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: listItems.map((item) {
+                  final String title = item['orderGroupName'].toString();
+                  return ListCard(
+                    isActive: !item['isFinished'],
+                    title: title,
+                    backgroundColor: AppColors.accentGray,
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ToDoPage(
+                            title: title,
+                            squadListResponse: item,
                           ),
-                        );
-                      },
-                      onDelete: () {
-                        // Lösch-Logik hier
-                      },
-                      onReceipt: () {
-                        // Belege-Logik hier
-                      },
-                    );
-                  }).toList(),
-                ),
+                        ),
+                      );
+                    },
+                    onDelete: () {
+                      // Delete logic here
+                    },
+                    onReceipt: () {
+                      // Receipt logic here
+                    },
+                  );
+                }).toList(),
               ),
-              FooterButtons(onPressedAdd: addList)
-            ],
-          );
-  }
+            ),
+            FooterButtons(onPressedAdd: addList)
+          ],
+        );
+}
 }

@@ -102,6 +102,7 @@ class _CreditsState extends State<Credits> {
                     shrinkWrap: true,
                     children: creditInfo.map((info) {
                       return ListCard(
+                        isActive: false,
                         onDelete: () {},
                         onReceipt: () {},
                         subtitle: info['subtitle'],
