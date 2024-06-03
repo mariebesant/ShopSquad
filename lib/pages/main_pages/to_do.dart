@@ -61,6 +61,7 @@ class _ToDoState extends State<ToDo> {
       // ignore: avoid_print
       print('Failed to fetch orders');
     }
+    print(listCardInfo.length);
     setState(() {
       isLoading = false;
     });
@@ -118,14 +119,18 @@ class _ToDoState extends State<ToDo> {
         ? CircularProgressIndicator(color: AppColors.green)
         : Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
-                child: MyProgressIndicator(
-                  totalTasks: totalTasks,
-                  completedTasks: completedTasks,
-                ),
-              ),
+              totalTasks != 0
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: AppSizes.s1, horizontal: AppSizes.s1_25),
+                      child: MyProgressIndicator(
+                        totalTasks: totalTasks,
+                        completedTasks: completedTasks,
+                      ),
+                    )
+                  : SizedBox(
+                      height: AppSizes.s0_125,
+                    ),
               Expanded(
                 child: ListView.builder(
                   itemCount: listCardInfo.length,
