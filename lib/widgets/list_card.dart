@@ -92,10 +92,7 @@ class ListCardState extends State<ListCard> {
             ),
             trailing: widget.trailing ??
                 (widget.isActive
-                    ? IconButton(
-                        icon: Icon(menu, color: AppColors.white),
-                        onPressed: () => showOptionsDialog(context),
-                      )
+                    ? null
                     : IconButton(
                         onPressed: () {},
                         icon: Icon(
