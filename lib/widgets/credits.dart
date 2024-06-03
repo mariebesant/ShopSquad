@@ -34,7 +34,7 @@ class _CreditsState extends State<Credits> {
       List<dynamic> responseList = json.decode(response.body);
       setState(() {
         creditInfo = responseList.where((item) {
-          print('Creditor ID${item['creditorId']}');
+          print('Creditor ID ${item['creditorId']}');
           print('Debitor ID${item['debitorId']}');
           print('userID $userID');
           final bool isCreditor = item['creditorId'] == userID;

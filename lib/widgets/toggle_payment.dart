@@ -11,7 +11,9 @@ const List<(PaymentMethod, String)> paymentOptions = <(PaymentMethod, String)>[
 ];
 
 class TogglePayment extends StatefulWidget {
-  const TogglePayment({super.key});
+  const TogglePayment({super.key, required this.onPaymentChange});
+
+  final void Function(bool isPaypal, String paypalName) onPaymentChange;
 
   @override
   State<TogglePayment> createState() => _TogglePaymentState();
@@ -22,11 +24,11 @@ class _TogglePaymentState extends State<TogglePayment> {
     PaymentMethod.cash
   };
   bool isPaypal = false;
+  TextEditingController paypalNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SegmentedButton<PaymentMethod>(
           multiSelectionEnabled: false,
@@ -37,18 +39,17 @@ class _TogglePaymentState extends State<TogglePayment> {
             backgroundColor: WidgetStateProperty.resolveWith<Color>(
               (Set<WidgetState> states) {
                 if (states.contains(WidgetState.selected)) {
-                  return AppColors.green; // Die Farbe für ausgewählte Zustände
+                  return AppColors.green;
                 }
-                return AppColors
-                    .lightGray; // Die Farbe für alle anderen (nicht ausgewählten) Zustände
+                return AppColors.lightGray;
               },
             ),
           ),
           onSelectionChanged: (Set<PaymentMethod> newSelection) {
             setState(() {
               _segmentedButtonSelection = newSelection;
-              isPaypal =
-                  _segmentedButtonSelection.contains(PaymentMethod.paypal);
+              isPaypal = _segmentedButtonSelection.contains(PaymentMethod.paypal);
+              widget.onPaymentChange(isPaypal, paypalNameController.text);
             });
           },
           segments: paymentOptions.map<ButtonSegment<PaymentMethod>>(
@@ -63,7 +64,15 @@ class _TogglePaymentState extends State<TogglePayment> {
           style: TextStyle(color: AppColors.green, fontSize: AppSizes.s0_75),
         ),
         const SizedBox(height: AppSizes.s1),
-        isPaypal ? const MyTextField(text: 'Paypal Name', isPassword: false,) : Container(),
+        if (isPaypal)
+          MyTextField(
+            controller: paypalNameController,
+            text: 'Paypal Name',
+            isPassword: false,
+            onChange: (value) {
+              widget.onPaymentChange(isPaypal, value);
+            },
+          ),
       ],
     );
   }

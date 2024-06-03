@@ -117,6 +117,7 @@ class ListOrderService {
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         },
         body: body);
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       return response;
@@ -133,8 +134,12 @@ class ListOrderService {
 
     if (response.statusCode == 200) {
       List<dynamic> responseData = json.decode(response.body);
-      List<Map<String, dynamic>> products = List<Map<String, dynamic>>.from(
-          responseData.map((item) => item as Map<String, dynamic>));
+      List<Map<String, dynamic>> products =
+          List<Map<String, dynamic>>.from(responseData.map((item) => {
+                'product': item['name'],
+                'unit': item['unitType'],
+                'id': item['id'],
+              }));
       return products;
     } else {
       // Handle den Fehler entsprechend

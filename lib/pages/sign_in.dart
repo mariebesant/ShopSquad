@@ -16,37 +16,47 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-    TextEditingController usernameController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-    Future onPressed() async {
-      String username = usernameController.text;
-      String password = passwordController.text;
+  bool isPaypal = false;
+  String paypalName = "";
 
-      Map<String, dynamic> requestBody = {
-        "username": username,
-        "password": password,
-        "isPaypal": false, // isPaypal auf false setzen
-      };
+  void _onPaymentChange(bool isPaypalSelected, String newPaypalName) {
+    setState(() {
+      isPaypal = isPaypalSelected;
+      paypalName = newPaypalName;
+    });
+  }
 
-      final response = await http.post(
-        Uri.parse(
-            'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/users/signin'),
-        body: jsonEncode(requestBody),
-        headers: {'Content-Type': 'application/json'},
-      );
+  Future<void> onPressed() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
 
-      if (response.statusCode == 200) { 
+    Map<String, dynamic> requestBody = {
+      "username": username,
+      "password": password,
+      "isPaypal": isPaypal,
+      "paypalName": paypalName
+    };
+
+    final response = await http.post(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/users/signin'),
+      body: jsonEncode(requestBody),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
         localStorage.setItem('accessBearer',  response.body);
 
-        Navigator.of(context).push(MaterialPageRoute<dynamic>(
-          builder: (context) => const Homepage(),
-        ));
-      } else {
-        // ignore: avoid_print
-        print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}'); 
-      }
+      Navigator.of(context).push(MaterialPageRoute<dynamic>(
+        builder: (context) => const Homepage(),
+      ));
+    } else {
+      print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +89,7 @@ class _SignInState extends State<SignIn> {
                   controller: passwordController,
                   text: 'Passwort',
                   isPassword: true),
-              const TogglePayment(),
+              TogglePayment(onPaymentChange: _onPaymentChange),
             ],
           ),
         ),

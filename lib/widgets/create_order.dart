@@ -25,11 +25,13 @@ class CreateOrder extends StatefulWidget {
 
 class _CreateOrderState extends State<CreateOrder> {
   TextEditingController orderQuantityController = TextEditingController();
+  TextEditingController orderUnitController = TextEditingController();
   final ListOrderService listOrderService = ListOrderService();
   final AuthService authService = AuthService();
 
   bool isLoading = false;
   List<Map<String, dynamic>> products = [];
+
   Map<String, dynamic>? selectedProduct;
 
   static const IconData backIcon =
@@ -48,7 +50,6 @@ class _CreateOrderState extends State<CreateOrder> {
         products = productList;
       });
     } else {
-      // ignore: avoid_print
       print('Failed to load products');
     }
   }
@@ -109,9 +110,7 @@ class _CreateOrderState extends State<CreateOrder> {
       widget.onOrderCreated();
       Navigator.of(context).pop();
     } else {
-      // ignore: avoid_print
       print('Failed to create order');
-      // Handle the error
     }
 
     setState(() {
@@ -159,15 +158,17 @@ class _CreateOrderState extends State<CreateOrder> {
               const SizedBox(height: AppSizes.s1),
               DropdownSearch<Map<String, dynamic>>(
                 items: products,
-                itemAsString: (Map<String, dynamic> p) => p['name'],
+                itemAsString: (Map<String, dynamic> p) => p['product'],
                 onChanged: (Map<String, dynamic>? data) {
                   setState(() {
                     selectedProduct = data;
+                    print("Ausgewahlt ${data?['unit']}");
+                    orderUnitController.text = data?['unit'] ?? '1';
                   });
                 },
                 dropdownBuilder: (context, selectedItem) {
                   return Text(
-                    selectedItem?['name'] ?? 'wähle ein Produkt',
+                    selectedItem?['product'] ?? 'wähle ein Produkt',
                     style: const TextStyle(color: Colors.green),
                   );
                 },
@@ -188,8 +189,8 @@ class _CreateOrderState extends State<CreateOrder> {
                 controller: orderQuantityController,
               ),
               MyTextField(
-                controller: orderQuantityController,
-                text: 'Menge',
+                controller: orderUnitController,
+                text: 'Einheit',
                 isPassword: false,
               ),
             ],
