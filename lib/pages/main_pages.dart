@@ -83,8 +83,8 @@ class _MainPagesState extends State<MainPages> {
     setState(() {
       currentIndex = index;
       updateTitle(index);
-      _controller.animateToPage(index,
-          duration: const Duration(milliseconds: 500), curve: Curves.ease);
+      // Jump to page without animation
+      _controller.jumpToPage(index);
     });
   }
 
@@ -103,16 +103,19 @@ class _MainPagesState extends State<MainPages> {
         children: [
           Expanded(
             child: PageView.builder(
+              controller: _controller,
               onPageChanged: (index) {
-                onPressed(index); // Ensure title is updated on page change
+                setState(() {
+                  currentIndex = index;
+                  updateTitle(index);
+                });
               },
+              itemCount: _content.length,
               itemBuilder: (context, index) {
                 return Center(
                   child: getSlide(context, index),
                 );
               },
-              controller: _controller,
-              itemCount: _content.length,
             ),
           ),
           Container(

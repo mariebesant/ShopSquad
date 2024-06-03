@@ -54,7 +54,7 @@ class _CreateSquadState extends State<CreateSquad> {
 
     final response = await groupService.createSquad(groupname);
 
-    if (response != null && response.statusCode == 200) { 
+    if (response != null && response.statusCode == 200) {
       widget.onGroupCreated();
     } else {
       // ignore: avoid_print
@@ -84,6 +84,26 @@ class _CreateSquadState extends State<CreateSquad> {
     });
   }
 
+  void _showEmptyGroupNameAlert() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Fehler'),
+          content: const Text('Gruppenname darf nicht leer sein.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +122,11 @@ class _CreateSquadState extends State<CreateSquad> {
           TextButton(
             onPressed: () {
               if (!isLoading) {
-                newGroup(groupnameController.text);
+                if (groupnameController.text.isEmpty) {
+                  _showEmptyGroupNameAlert();
+                } else {
+                  newGroup(groupnameController.text);
+                }
               }
             },
             child: isLoading

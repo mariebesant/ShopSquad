@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart'; 
@@ -15,7 +17,7 @@ class ToDoCard extends StatelessWidget {
 
   final bool isSortByPerson;
   final String title;
-  final int subtitle;
+  final String subtitle;
   final int trailing;
   final bool isChecked; // Add this line
   final ValueChanged<bool?> onChanged; // Add this line

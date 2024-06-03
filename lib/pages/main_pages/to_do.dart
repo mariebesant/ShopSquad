@@ -24,7 +24,6 @@ class ToDo extends StatefulWidget {
 class _ToDoState extends State<ToDo> {
   List<Map<String, dynamic>> listCardInfo = [];
   List<Map<String, dynamic>> body = [];
-  bool _isLoading = true;
   final SquadService squadService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
   String? orderGroupID;
@@ -128,7 +127,7 @@ class _ToDoState extends State<ToDo> {
                         completedTasks: completedTasks,
                       ),
                     )
-                  : SizedBox(
+                  : const SizedBox(
                       height: AppSizes.s0_125,
                     ),
               Expanded(
@@ -138,8 +137,8 @@ class _ToDoState extends State<ToDo> {
                     final info = listCardInfo[index];
                     return ToDoCard(
                       isSortByPerson: false,
-                      subtitle: info['product']['price'],
-                      title: info['product']['name'],
+                      subtitle: (info['product']['price']).toString(),
+                      title: (info['product']['name']).toString(),
                       trailing: info['quantity'],
                       isChecked: info['isChecked'],
                       onChanged: (bool? value) {

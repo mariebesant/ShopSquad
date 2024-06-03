@@ -38,38 +38,39 @@ class ListOrderService {
   }
 
   Future<http.Response?> listCardInfo() async {
-  String? accessToken = await authService.getAccessToken();
+    String? accessToken = await authService.getAccessToken();
 
-  final squad = await squadService.currentSquad();
+    final squad = await squadService.currentSquad();
 
-  if (accessToken == null) {
-    print('Access token not found');
-    return null;
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+
+    final response = await http.post(
+      Uri.parse(
+          'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups/squad'),
+      headers: {
+        'Content-Type': 'application/json',
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+      body: squad!.body,
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<dynamic> filteredResponse = jsonResponse
+          .where((orderGroup) => orderGroup['isFinished'] == false)
+          .toList();
+
+      // Create a new Response with the filtered body
+      return http.Response(jsonEncode(filteredResponse), 200,
+          headers: response.headers);
+    } else {
+      // Handle the error
+      return null;
+    }
   }
-
-  final response = await http.post(
-    Uri.parse(
-        'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups/squad'),
-    headers: {
-      'Content-Type': 'application/json',
-      HttpHeaders.authorizationHeader: 'Bearer $accessToken',
-    },
-    body: squad!.body,
-  );
-
-  if (response.statusCode == 200) {
-    List<dynamic> jsonResponse = jsonDecode(response.body);
-    List<dynamic> filteredResponse = jsonResponse
-        .where((orderGroup) => orderGroup['isFinished'] == false)
-        .toList();
-    
-    // Create a new Response with the filtered body
-    return http.Response(jsonEncode(filteredResponse), 200, headers: response.headers);
-  } else {
-    // Handle the error
-    return null;
-  }
-}
 
   Future<http.Response?> listOrders(http.Response orderResponse) async {
     String? accessToken = await authService.getAccessToken();
@@ -158,8 +159,7 @@ class ListOrderService {
     final url =
         'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/orderGroups/$userID/finish';
 
-    final response = await http.put(
-        Uri.parse(url),
+    final response = await http.put(Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',

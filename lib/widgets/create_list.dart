@@ -27,7 +27,32 @@ class _CreateListState extends State<CreateList> {
   static const IconData backIcon =
       IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
 
+  void _showAlert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Fehler'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> newGroup(String groupname) async {
+    if (groupname.isEmpty) {
+      _showAlert('Listenname darf nicht leer sein.');
+      return;
+    }
+
     setState(() {
       isLoading = true;
     });

@@ -16,9 +16,7 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
-  static const IconData menu = IconData(0xf8dc, fontFamily: 'MaterialIcons');
-
-  List<dynamic> listItems = []; // Liste für die gesamte Antwort
+  List<dynamic> listItems = [];
   late String squadID;
   final SquadService groupService = SquadService();
   final ListOrderService listOrderService = ListOrderService();
@@ -38,7 +36,7 @@ class _ListPageState extends State<ListPage> {
       final responseData = json.decode(currentSquad!.body);
 
       setState(() {
-        listItems = responseList; // Die gesamte Antwort speichern
+        listItems = responseList; 
         squadID = responseData['id'];
       });
     } else {

@@ -5,6 +5,7 @@ import 'package:shopsquad/services/list_order_service.dart';
 import 'package:shopsquad/services/auth_service.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
+import 'package:shopsquad/widgets/my_numberfield.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
 
 class CreateOrder extends StatefulWidget {
@@ -52,6 +53,26 @@ class _CreateOrderState extends State<CreateOrder> {
     }
   }
 
+  void _showAlert(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Fehler'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> createOrder() async {
     setState(() {
       isLoading = true;
@@ -60,10 +81,19 @@ class _CreateOrderState extends State<CreateOrder> {
     final selectedProductId = selectedProduct?['id'];
     final quantity = int.tryParse(orderQuantityController.text) ?? 0;
 
-    if (selectedProductId == null || quantity <= 0) {
+    if (selectedProductId == null) {
       setState(() {
         isLoading = false;
       });
+      _showAlert('Bitte wählen Sie ein Produkt aus.');
+      return;
+    }
+
+    if (quantity <= 0) {
+      setState(() {
+        isLoading = false;
+      });
+      _showAlert('Bitte geben Sie eine gültige Menge ein.');
       return;
     }
 
@@ -152,6 +182,11 @@ class _CreateOrderState extends State<CreateOrder> {
                 ),
               ),
               const SizedBox(height: AppSizes.s1),
+              MyNumberField(
+                text: 'Menge',
+                isPassword: false,
+                controller: orderQuantityController,
+              ),
               MyTextField(
                 controller: orderQuantityController,
                 text: 'Menge',
