@@ -7,6 +7,7 @@ import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_numberfield.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
+import 'package:shopsquad/widgets/barcodescanner.dart';
 
 class CreateOrder extends StatefulWidget {
   const CreateOrder(
@@ -31,8 +32,8 @@ class _CreateOrderState extends State<CreateOrder> {
 
   bool isLoading = false;
   List<Map<String, dynamic>> products = [];
-
   Map<String, dynamic>? selectedProduct;
+  String scannedBarcode = '';
 
   static const IconData backIcon =
       IconData(0xf570, fontFamily: 'MaterialIcons', matchTextDirection: true);
@@ -120,6 +121,17 @@ class _CreateOrderState extends State<CreateOrder> {
     });
   }
 
+  void updateBarcode(String barcode) {
+    setState(() {
+      scannedBarcode = barcode;
+      // Optionally, find the product by barcode and set it as selectedProduct
+      selectedProduct = products.firstWhere(
+          (product) => product['barcode'] == barcode,
+          orElse: () => {});
+      orderUnitController.text = selectedProduct?['unitType'] ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,31 +170,38 @@ class _CreateOrderState extends State<CreateOrder> {
           child: Column(
             children: [
               const SizedBox(height: AppSizes.s1),
-              DropdownSearch<Map<String, dynamic>>(
-                items: products,
-                itemAsString: (Map<String, dynamic> p) => p['name'],
-                onChanged: (Map<String, dynamic>? data) {
-                  setState(() {
-                    selectedProduct = data;
-                    print("Ausgewahlt ${data?['unitType']}");
-                    orderUnitController.text = data?['unitType'] ?? '1';
-                  });
-                },
-                dropdownBuilder: (context, selectedItem) {
-                  return Text(
-                    selectedItem?['name'] ?? 'wähle ein Produkt',
-                    style: const TextStyle(color: Colors.green),
-                  );
-                },
-                dropdownDecoratorProps: DropDownDecoratorProps(
-                  dropdownSearchDecoration: InputDecoration(
-                    labelText: "Produkte",
-                    hintText: "suche nach einem Produkt",
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.white)),
-                    labelStyle: TextStyle(color: AppColors.green),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownSearch<Map<String, dynamic>>(
+                      items: products,
+                      itemAsString: (Map<String, dynamic> p) => p['name'],
+                      onChanged: (Map<String, dynamic>? data) {
+                        setState(() {
+                          selectedProduct = data;
+                          print("Ausgewählt ${data?['unitType']}");
+                          orderUnitController.text = data?['unitType'] ?? '1';
+                        });
+                      },
+                      dropdownBuilder: (context, selectedItem) {
+                        return Text(
+                          selectedItem?['name'] ?? 'wähle ein Produkt',
+                          style: const TextStyle(color: Colors.green),
+                        );
+                      },
+                      dropdownDecoratorProps: DropDownDecoratorProps(
+                        dropdownSearchDecoration: InputDecoration(
+                          labelText: "Produkte",
+                          hintText: "suche nach einem Produkt",
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.white)),
+                          labelStyle: TextStyle(color: AppColors.green),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  Barcodescanner(onBarcodeScanned: updateBarcode),
+                ],
               ),
               const SizedBox(height: AppSizes.s1),
               MyNumberField(
