@@ -7,7 +7,7 @@ import 'package:shopsquad/theme/colors.dart';
 
 class ImageBill extends StatefulWidget {
   final Function(String)? onImageConverted;
-  const ImageBill({Key? key, this.onImageConverted}) : super(key: key);
+  const ImageBill({super.key, this.onImageConverted});
 
   @override
   State<ImageBill> createState() => _ImageBillState();
@@ -61,16 +61,16 @@ class _ImageBillState extends State<ImageBill> {
                     height: 300,
                     fit: BoxFit.cover,
                   )
-                : Text('Kein Bild ausgewählt'),
-            SizedBox(height: 20),
+                : const Text('Kein Bild ausgewählt'),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _getImageFromCamera,
-              child: Text('Kamera öffnen'),
+              child: const Text('Kamera öffnen'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _onOkPressed,
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         ),

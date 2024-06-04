@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shopsquad/services/squad_service.dart';
 import 'package:shopsquad/theme/colors.dart';
@@ -23,7 +22,7 @@ class ListCard extends StatefulWidget {
   final VoidCallback? onTap;
   final VoidCallback onDelete;
   final VoidCallback onReceipt;
-  final String? subtitle;
+  final Widget? subtitle;
   final bool isActive;
   final String? imageUrl;
 
@@ -45,18 +44,19 @@ class ListCardState extends State<ListCard> {
     setState(() {
       _isLoading = true;
     });
+    showImage(widget.imageUrl!);
 
-    String? imageUrl;
-    try {
-      imageUrl = await squadService.getImageLink();
-      imageUrl = imageUrl.replaceAll('"', '');
-      print(imageUrl);
-    } catch (e) {
-      // Handle error
-    }
-    if (imageUrl != null && Uri.tryParse(imageUrl)?.hasAbsolutePath == true) {
-      showImage(widget.imageUrl!);
-    }
+    // String? imageUrl;
+    // try {
+    // imageUrl = await squadService.getImageLink();
+    // imageUrl = imageUrl.replaceAll('"', '');
+    // print(imageUrl);
+    // } catch (e) {
+    // // Handle error
+    // }
+    // if (imageUrl != null && Uri.tryParse(imageUrl)?.hasAbsolutePath == true) {
+    //   showImage(widget.imageUrl!);
+    // }
 
     setState(() {
       _isLoading = false;
@@ -116,17 +116,22 @@ class ListCardState extends State<ListCard> {
               widget.title,
               style: TextStyle(color: AppColors.white),
             ),
+            subtitle: widget.subtitle == null ? null : widget.subtitle,
             trailing: widget.trailing ??
                 (widget.isActive
                     ? null
-                    : IconButton(
-                        onPressed: () {
-                          showOptionsDialog(context);
-                        },
-                        icon: Icon(
-                          moneyIcon,
-                          color: AppColors.white,
-                        ))),
+                    : !_isLoading
+                        ? (IconButton(
+                            onPressed: () {
+                              showOptionsDialog(context);
+                            },
+                            icon: Icon(
+                              moneyIcon,
+                              color: AppColors.white,
+                            )))
+                        : CircularProgressIndicator(
+                            color: AppColors.green,
+                          )),
           ),
         ),
       ),

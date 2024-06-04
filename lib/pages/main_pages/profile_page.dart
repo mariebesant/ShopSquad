@@ -11,36 +11,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String credit = '-23,78';
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const SizedBox(
-          height: AppSizes.s1,
-        ),
-        Text(
-          credit,
-          style: TextStyle(
-              color: AppColors.warning,
-              fontSize: AppSizes.s2,
-              fontWeight: FontWeight.w300),
-        ),
-        const SizedBox(
-          height: AppSizes.s0_5,
-        ),
-        Text(
-          'saldo',
-          style: TextStyle(
-              color: AppColors.lightGray,
-              fontSize: AppSizes.s1,
-              fontWeight: FontWeight.w300),
-        ),
-        const SizedBox(
+        SizedBox(
           height: AppSizes.s3_5,
         ),
-        const Profile()
+        Profile()
       ],
     );
   }

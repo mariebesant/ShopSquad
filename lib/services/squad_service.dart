@@ -204,4 +204,34 @@ class SquadService {
       return '';
     }
   }
+
+  Future<int?> payment(List<dynamic> orderResponse) async {
+    String? accessToken = await authService.getAccessToken();
+
+    if (accessToken == null) {
+      print('Access token not found');
+      return null;
+    }
+    var singleOrderResponse = orderResponse.first;
+
+    try {
+      final response = await http.put(
+        Uri.parse(
+            'https://europe-west1-shopsquad-8cac8.cloudfunctions.net/app/api/debts/fulfilled'),
+        headers: {
+          HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(singleOrderResponse),
+      );
+
+      print('Request body: ${response.body}');
+      print('Response status code: ${response.statusCode}');
+
+      return response.statusCode == 200 ? 0 : null;
+    } catch (e) {
+      print('Error occurred: $e');
+      return null;
+    }
+  }
 }
