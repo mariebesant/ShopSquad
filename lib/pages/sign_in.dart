@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:shopsquad/pages/homepage.dart';
+import 'package:shopsquad/pages/main_pages.dart';
 import 'package:shopsquad/theme/colors.dart';
 import 'package:shopsquad/theme/sizes.dart';
 import 'package:shopsquad/widgets/my_textfield.dart';
@@ -54,9 +55,13 @@ class _SignInState extends State<SignIn> {
     if (response.statusCode == 200) {
       localStorage.setItem('accessBearer', response.body);
 
-      Navigator.of(context).push(MaterialPageRoute<dynamic>(
-        builder: (context) => const Homepage(),
-      ));
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<dynamic>(
+          builder: (context) => const MainPages(),
+        ),
+        (route) => false,
+      );
+      
     } else {
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
     }

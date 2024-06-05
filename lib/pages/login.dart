@@ -48,10 +48,13 @@ class _LoginState extends State<Login> {
       print('Erfolgreich angemeldet!');
 
       localStorage.setItem('accessBearer', responseToken);
-
-      Navigator.of(context).push(MaterialPageRoute<dynamic>(
-        builder: (context) => const MainPages(),
-      ));
+      
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<dynamic>(
+          builder: (context) => const MainPages(),
+        ),
+        (route) => false,
+      );
     } else {
       // ignore: avoid_print
       print('Fehler bei der Anmeldung. Statuscode: ${response.statusCode}');
